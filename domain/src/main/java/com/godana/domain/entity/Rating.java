@@ -24,12 +24,12 @@ public class Rating extends BaseEntity{
 
     @ManyToOne
     @JoinColumn(name = "place_id" ,referencedColumnName = "id", nullable = false)
-    private Place places;
+    private Place place;
 
 
     @ManyToOne
     @JoinColumn(name = "user_id" , referencedColumnName = "id" , nullable = false)
-    private User users;
+    private User user;
 
     private double rating;
 

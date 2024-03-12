@@ -26,7 +26,9 @@ public class Category extends BaseEntity {
     @Column(name = "titlenumerical_order")
     private int  titlenumericalOrder;
 
-
     @OneToMany(targetEntity = Place.class, fetch = FetchType.EAGER)
     private List<Place> place;
+
+    @OneToMany(mappedBy = "category")
+    private List<Post> postList;
 }

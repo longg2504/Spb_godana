@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -36,6 +37,16 @@ public class Place extends BaseEntity{
     @OneToOne
     @JoinColumn(name="location_region_id", referencedColumnName = "id" , nullable = false)
     private LocationRegion locationRegion;
+
+    @OneToMany(mappedBy = "place")
+    private List<Rating> ratingList;
+
+    @OneToMany(mappedBy = "place")
+    private List<NearbyPlace> nearbyPlaceList;
+
+
+
+
 
 
 
