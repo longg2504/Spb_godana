@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -27,10 +28,27 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
+    @Column(name = "full_name", length = 50)
+    private String fullName;
+
+    private String email;
+
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private Role role;
 
+
+    @OneToMany(mappedBy = "user")
+    private List<Post> postList;
+
+    @OneToMany(mappedBy = "user")
+    private List<Like> likeList;
+
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments;
+
+    @OneToMany(mappedBy = "user")
+    private List<Reply> replies;
 
     @Override
     public String toString() {
@@ -39,6 +57,8 @@ public class User extends BaseEntity {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
+                ", fullname= '" + fullName + '\'' +
+                ", email= '" + email + '\'' +
                 '}';
     }
 
