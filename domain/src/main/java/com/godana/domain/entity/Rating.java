@@ -20,7 +20,7 @@ import java.util.List;
 public class Rating extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "place_id" ,referencedColumnName = "id", nullable = false)
