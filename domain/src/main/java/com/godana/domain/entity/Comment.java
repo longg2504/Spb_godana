@@ -19,7 +19,7 @@ import java.util.List;
 public class Comment extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(length = 500)
     private String content;

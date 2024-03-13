@@ -18,7 +18,7 @@ import javax.persistence.*;
 public class LocationRegion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "province_name")
     private String provinceName;

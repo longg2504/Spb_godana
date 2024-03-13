@@ -1,5 +1,6 @@
 package com.godana.domain.entity;
 
+import com.godana.domain.enums.EUserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,6 +38,9 @@ public class User extends BaseEntity {
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private Role role;
 
+    @Enumerated(EnumType.STRING)
+    private EUserStatus status;
+
 
     @OneToMany(mappedBy = "user")
     private List<Post> postList;
@@ -49,6 +53,10 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user")
     private List<Reply> replies;
+
+
+
+
 
     @Override
     public String toString() {

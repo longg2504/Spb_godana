@@ -1,12 +1,12 @@
 package com.godana.domain.enums;
 
-public enum ERole {
-    ROLE_ADMIN("ADMIN"),
-    ROLE_USER("USER");
+public enum EUserStatus {
+    ONLINE("ONLINE"),
+    OFFLINE("OFFLINE");
 
     private final String value;
 
-    ERole(String value) {
+    EUserStatus(String value) {
         this.value = value;
     }
 

@@ -18,7 +18,7 @@ import javax.persistence.*;
 public class Like extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "post_id" , referencedColumnName = "id", nullable = false)
