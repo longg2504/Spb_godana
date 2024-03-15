@@ -5,10 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.hibernate.mapping.Join;
+
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -25,7 +24,6 @@ public class Rating extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "place_id" ,referencedColumnName = "id", nullable = false)
     private Place place;
-
 
     @ManyToOne
     @JoinColumn(name = "user_id" , referencedColumnName = "id" , nullable = false)
