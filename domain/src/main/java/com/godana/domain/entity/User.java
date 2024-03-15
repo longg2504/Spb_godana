@@ -38,9 +38,12 @@ public class User extends BaseEntity {
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private Role role;
 
+    @OneToOne
+    @JoinColumn(name = "user_avatar_id" , referencedColumnName = "id" , nullable = false)
+    private Avatar userAvatar;
+
     @Enumerated(EnumType.STRING)
     private EUserStatus status;
-
 
     @OneToMany(mappedBy = "user")
     private List<Post> postList;
@@ -53,6 +56,8 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user")
     private List<Reply> replies;
+
+
 
 
 

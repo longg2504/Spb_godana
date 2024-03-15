@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -14,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "places")
+@Table(name ="places")
 @Accessors(chain = true)
 public class Place extends BaseEntity{
     @Id
@@ -23,7 +22,8 @@ public class Place extends BaseEntity{
 
     private String title;
 
-    private String describe;
+    private String content;
+
     @Column(length = 50)
     private String longitude;
 
@@ -34,7 +34,7 @@ public class Place extends BaseEntity{
     @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
     private Category category;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="location_region_id", referencedColumnName = "id" , nullable = false)
     private LocationRegion locationRegion;
 
@@ -43,11 +43,5 @@ public class Place extends BaseEntity{
 
     @OneToMany(mappedBy = "place")
     private List<NearbyPlace> nearbyPlaceList;
-
-
-
-
-
-
 
 }
