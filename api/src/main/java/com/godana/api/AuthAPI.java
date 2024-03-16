@@ -1,12 +1,28 @@
 package com.godana.api;
 
+import com.godana.domain.dto.user.UserLoginReqDTO;
+import com.godana.domain.dto.user.UserRegisterReqDTO;
+import com.godana.domain.entity.JwtResponse;
+import com.godana.domain.entity.Role;
+import com.godana.domain.entity.User;
+import com.godana.exception.DataInputException;
+import com.godana.exception.EmailExistsException;
+import com.godana.exception.UnauthorizedException;
 import com.godana.service.jwt.JwtService;
 import com.godana.service.role.IRoleService;
 import com.godana.service.user.IUserService;
 import com.godana.utils.AppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -80,7 +97,7 @@ public class AuthAPI {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         User currentUser = userService.getByUsername(username);
 
-        JwtResponse jwtResponse;
+        JwtResponse jwtResponse = null;
 
 
         if (currentUser.isDeleted()) {
@@ -96,17 +113,6 @@ public class AuthAPI {
                     currentUser.getUsername(),
                     userDetails.getAuthorities()
 
-            );
-        } else{
-            Optional<Staff> staffOptional = staffService.findByUser(currentUser);
-            jwtResponse = new JwtResponse(
-
-                    jwt,
-                    currentUser.getId(),
-                    userDetails.getUsername(),
-                    currentUser.getUsername(),
-                    staffOptional.get().getStaffAvatar(),
-                    userDetails.getAuthorities()
             );
         }
 
