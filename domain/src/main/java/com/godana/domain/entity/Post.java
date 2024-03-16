@@ -42,4 +42,8 @@ public class Post extends BaseEntity{
 
     @OneToMany(mappedBy = "post")
     private List<Comment> comments;
+
+    @OneToMany(mappedBy = "post")
+    private List<Avatar> postImages;
+
 }
