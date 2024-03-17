@@ -39,7 +39,7 @@ public class User extends BaseEntity {
     private Role role;
 
     @OneToOne
-    @JoinColumn(name = "user_avatar_id" , referencedColumnName = "id" , nullable = false)
+    @JoinColumn(name = "user_avatar_id" , referencedColumnName = "id")
     private Avatar userAvatar;
 
     @Enumerated(EnumType.STRING)

@@ -2,11 +2,14 @@ package com.godana.domain.entity;
 //
 //import com.godana.domain.dto.avatar.AvatarDTO;
 //import com.godana.domain.dto.avatar.AvatarResDTO;
+import com.godana.domain.dto.avatar.AvatarReqDTO;
+import com.godana.domain.dto.avatar.AvatarResDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.apache.http.pool.PoolStats;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -43,27 +46,32 @@ public class Avatar extends BaseEntity {
 
     private Integer height;
 
-//    public AvatarDTO toAvatarDTO() {
-//        return new AvatarDTO()
-//                .setId(id)
-//                .setFileName(fileName)
-//                .setFileFolder(fileFolder)
-//                .setFileUrl(fileUrl)
-//                .setCloudId(cloudId)
-//                .setWidth(width)
-//                .setHeight(height);
-//    }
-//
-//
-//    public AvatarResDTO toAvatarResDTO() {
-//        return new AvatarResDTO()
-//                .setId(id)
-//                .setFileName(fileName)
-//                .setFileFolder(fileFolder)
-//                .setFileUrl(fileUrl)
-//                .setCloudId(cloudId)
-//                .setWidth(width)
-//                .setHeight(height)
-//                ;
-//    }
+    @ManyToOne
+    @JoinColumn(name="post_image_id" , referencedColumnName = "id" )
+    private Post post;
+
+
+    public AvatarReqDTO toAvatarDTO() {
+        return new AvatarReqDTO()
+                .setId(id)
+                .setFileName(fileName)
+                .setFileFolder(fileFolder)
+                .setFileUrl(fileUrl)
+                .setCloudId(cloudId)
+                .setWidth(width)
+                .setHeight(height);
+    }
+
+
+    public AvatarResDTO toAvatarResDTO() {
+        return new AvatarResDTO()
+                .setId(id)
+                .setFileName(fileName)
+                .setFileFolder(fileFolder)
+                .setFileUrl(fileUrl)
+                .setCloudId(cloudId)
+                .setWidth(width)
+                .setHeight(height)
+                ;
+    }
 }

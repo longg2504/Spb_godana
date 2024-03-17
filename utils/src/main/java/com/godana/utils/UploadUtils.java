@@ -10,15 +10,16 @@ import java.util.Map;
 
 @Component
 public class UploadUtils {
-    public static final String IMAGE_UPLOAD_FOLDER = "product";
-    public static final String IMAGE_UPLOAD_FOLDER_1 = "staff";
+    public static final String IMAGE_UPLOAD_FOLDER = "postImage";
+    public static final String IMAGE_UPLOAD_FOLDER_1 = "user";
 
 
-    public Map buildImageUploadParams(Avatar productAvatar) {
-        if (productAvatar == null || productAvatar.getId() == null)
+
+    public Map buildImageUploadParams(Avatar postImage) {
+        if (postImage == null || postImage.getId() == null)
             throw new DataInputException("Không thể upload hình ảnh chưa được lưu");
 
-        String publicId = String.format("%s/%s", IMAGE_UPLOAD_FOLDER, productAvatar.getId());
+        String publicId = String.format("%s/%s", IMAGE_UPLOAD_FOLDER, postImage.getId());
 
         return ObjectUtils.asMap(
                 "public_id", publicId,
