@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -19,11 +21,17 @@ public class UploadAPI {
 
 
     @PostMapping("/upload")
-    public ResponseEntity<Map> uploadImage(@RequestParam("file") MultipartFile multipartFile,
+    public ResponseEntity<?> uploadImage(@RequestParam("file") List<MultipartFile> multipartFiles,
                                            @RequestParam Map<String, String> options) {
         try {
-            Map result = iUploadService.uploadImage(multipartFile, options);
-            return ResponseEntity.ok(result);
+            List<Map> mapList = new ArrayList<>();
+
+            for (MultipartFile item : multipartFiles) {
+                Map result = iUploadService.uploadImage(item, options);
+                mapList.add(result);
+            }
+
+            return ResponseEntity.ok(mapList);
         } catch (IOException e) {
             // Xử lý lỗi tại đây
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

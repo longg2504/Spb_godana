@@ -10,8 +10,9 @@ import java.util.Map;
 
 @Component
 public class UploadUtils {
-    public static final String IMAGE_UPLOAD_FOLDER = "product";
-    public static final String IMAGE_UPLOAD_FOLDER_1 = "staff";
+    public static final String IMAGE_UPLOAD_FOLDER = "postImage";
+    public static final String IMAGE_UPLOAD_FOLDER_1 = "user";
+
 
 
     public Map buildImageUploadParams(Avatar postImage) {
