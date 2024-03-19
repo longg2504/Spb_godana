@@ -1,5 +1,7 @@
 package com.godana.domain.entity;
 
+import com.godana.domain.dto.category.CategoryCreResDTO;
+import com.godana.domain.dto.category.CategoryDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +25,7 @@ public class Category extends BaseEntity {
 
     private String title;
 
+
     @Column(name = "titlenumerical_order")
     private int  titlenumericalOrder;
 
@@ -31,4 +34,18 @@ public class Category extends BaseEntity {
 
     @OneToMany(mappedBy = "category")
     private List<Post> postList;
+
+    public CategoryDTO toCategoryDTO() {
+        return new CategoryDTO()
+                .setId(id)
+                .setTitle(title)
+                .setTitlenumericalOrder(titlenumericalOrder);
+    }
+
+    public CategoryCreResDTO toCategoryCreResDTO(){
+        return new CategoryCreResDTO()
+                .setId(id)
+                .setTitlte(title)
+                .setTitleNumericalOrder(titlenumericalOrder);
+    }
 }

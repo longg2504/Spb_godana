@@ -1,5 +1,8 @@
 package com.godana.service.category;
 
+import com.godana.domain.dto.category.CategoryCreReqDTO;
+import com.godana.domain.dto.category.CategoryCreResDTO;
+import com.godana.domain.dto.category.CategoryDTO;
 import com.godana.domain.entity.Category;
 import com.godana.repository.category.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +40,30 @@ public class CategoryServiceImpl implements ICategoryService{
     @Override
     public void deleteById(Long id) {
         categoryRepository.deleteById(id);
+    }
+
+    @Override
+    public List<CategoryDTO> findAllCategoryDTO() {
+        return categoryRepository.findAllCategoryDTO();
+    }
+
+    @Override
+    public Optional<Category> findByIdAndDeletedFalse(Long id) {
+        return categoryRepository.findByIdAndDeletedFalse(id);
+    }
+
+    @Override
+    public Boolean existsByTitle(String title) {
+        return categoryRepository.existsByTitle(title);
+    }
+
+    @Override
+    public CategoryCreResDTO createCategory(CategoryCreReqDTO categoryCreReqDTO) {
+        Category category = categoryCreReqDTO.toCategory();
+
+        categoryRepository.save(category);
+        CategoryCreResDTO categoryCreResDTO = category.toCategoryCreResDTO();
+        categoryCreResDTO.setId(category.getId());
+        return categoryCreResDTO;
     }
 }
