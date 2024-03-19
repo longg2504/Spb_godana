@@ -14,13 +14,12 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class CategoryCreReqDTO {
     private String title;
-    private int titleNumericalOrder;
 
     public Category toCategory(){
         return new Category()
                 .setId(null)
                 .setTitle(title)
-                .setTitlenumericalOrder(titleNumericalOrder);
+                .setTitlenumericalOrder(null);
 
     }
 }

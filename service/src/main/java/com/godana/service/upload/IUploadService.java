@@ -9,6 +9,8 @@ import java.util.Map;
 public interface IUploadService {
     Map uploadImage(MultipartFile multipartFile, Map params) throws IOException;
 
+    List<Map> uploadImages(List<MultipartFile> multipartFiles, Map options) throws IOException;
+
     Map destroyImage(String publicId, Map params) throws IOException;
 
 }

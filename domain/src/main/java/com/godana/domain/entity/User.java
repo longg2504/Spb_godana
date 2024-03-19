@@ -1,5 +1,6 @@
 package com.godana.domain.entity;
 
+import com.godana.domain.dto.user.UserDTO;
 import com.godana.domain.enums.EUserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -57,12 +58,12 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user")
     private List<Reply> replies;
 
-
-
-
-
-
-
+    public UserDTO toUserDTO(){
+        return new UserDTO()
+                .setId(id)
+                .setUsername(username)
+                .setRole(role.toRoleDTO());
+    }
     @Override
     public String toString() {
         return "User{" +

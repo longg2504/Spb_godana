@@ -13,6 +13,8 @@ import org.apache.http.pool.PoolStats;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -74,4 +76,8 @@ public class Avatar extends BaseEntity {
                 .setHeight(height)
                 ;
     }
+
+
+
+
 }

@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AvartarRepository extends JpaRepository<Avatar, String> {
+public interface AvatarRepository extends JpaRepository<Avatar, String> {
 }

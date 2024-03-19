@@ -15,9 +15,9 @@ import lombok.experimental.Accessors;
 public class CategoryDTO {
     private Long id;
     private String title;
-    private int titlenumericalOrder;
+    private Long titlenumericalOrder;
 
-    public CategoryDTO(Long id, String title, int titlenumericalOrder) {
+    public CategoryDTO(Long id, String title, Long titlenumericalOrder) {
         this.id = id;
         this.title = title;
         this.titlenumericalOrder = titlenumericalOrder;

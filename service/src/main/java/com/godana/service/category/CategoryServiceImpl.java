@@ -62,8 +62,13 @@ public class CategoryServiceImpl implements ICategoryService{
         Category category = categoryCreReqDTO.toCategory();
 
         categoryRepository.save(category);
+
+        category.setTitlenumericalOrder(category.getId());
+        categoryRepository.save(category);
+
         CategoryCreResDTO categoryCreResDTO = category.toCategoryCreResDTO();
         categoryCreResDTO.setId(category.getId());
+        categoryCreResDTO.setTitleNumericalOrder(category.getTitlenumericalOrder());
         return categoryCreResDTO;
     }
 }

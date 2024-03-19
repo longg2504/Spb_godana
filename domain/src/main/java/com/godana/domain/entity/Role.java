@@ -1,5 +1,6 @@
 package com.godana.domain.entity;
 
+import com.godana.domain.dto.role.RoleDTO;
 import com.godana.domain.enums.ERole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,4 +31,12 @@ public class Role {
 
     @OneToMany(targetEntity = User.class, fetch = FetchType.EAGER)
     private List<User> users;
+
+    public RoleDTO toRoleDTO(){
+        return new RoleDTO()
+                .setId(id)
+                .setCode(code)
+                .setName(name);
+
+    }
 }

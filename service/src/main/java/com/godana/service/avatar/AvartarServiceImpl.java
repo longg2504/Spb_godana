@@ -1,7 +1,7 @@
 package com.godana.service.avatar;
 
 import com.godana.domain.entity.Avatar;
-import com.godana.repository.avatar.AvartarRepository;
+import com.godana.repository.avatar.AvatarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 public class AvartarServiceImpl implements IAvatarService{
     @Autowired
-    private AvartarRepository avatarRepository;
+    private AvatarRepository avatarRepository;
     @Override
     public List<Avatar> findAll() {
         return avatarRepository.findAll();

@@ -25,9 +25,9 @@ public class Category extends BaseEntity {
 
     private String title;
 
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "titlenumerical_order")
-    private int  titlenumericalOrder;
+    private Long  titlenumericalOrder;
 
     @OneToMany(mappedBy = "category")
     private List<Place> places;

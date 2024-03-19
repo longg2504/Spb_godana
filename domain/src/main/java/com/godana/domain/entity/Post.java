@@ -1,14 +1,15 @@
 package com.godana.domain.entity;
 
+import com.godana.domain.dto.avatar.AvatarResDTO;
+import com.godana.domain.dto.post.PostCreResDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -46,4 +47,23 @@ public class Post extends BaseEntity{
     @OneToMany(mappedBy = "post")
     private List<Avatar> postImages;
 
+
+    public PostCreResDTO toPostCreResDTO(List<Avatar> avatars) {
+        return new PostCreResDTO()
+                .setId(null)
+                .setPostTitle(postTitle)
+                .setContent(content)
+                .setUser(user.toUserDTO())
+                .setCategory(category.toCategoryDTO())
+                .setPostImages(toAvatarResDTOList(avatars));
+    }
+
+
+    public List<AvatarResDTO> toAvatarResDTOList(List<Avatar> avatars){
+        List<AvatarResDTO> dtoList = new ArrayList<>();
+        for (Avatar avatar : avatars) {
+            dtoList.add(avatar.toAvatarResDTO());
+        }
+        return dtoList;
+    }
 }

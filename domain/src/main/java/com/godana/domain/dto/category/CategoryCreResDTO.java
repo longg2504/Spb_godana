@@ -15,5 +15,5 @@ import javax.annotation.processing.SupportedSourceVersion;
 public class CategoryCreResDTO {
     private Long id;
     private String titlte;
-    private int titleNumericalOrder;
+    private Long titleNumericalOrder;
 }
