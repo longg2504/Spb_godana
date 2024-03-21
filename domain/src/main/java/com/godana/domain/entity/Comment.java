@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 @Table(name = "comments")
 @Accessors(chain = true)
-public class Comment extends BaseEntity{
+public class    Comment extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

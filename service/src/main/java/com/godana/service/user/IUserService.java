@@ -16,4 +16,6 @@ public interface IUserService extends IGeneralService<User, Long>, UserDetailsSe
     Optional<User> findByName(String userName);
 
 
+
+
 }

@@ -3,6 +3,8 @@ package com.godana.service.post;
 import com.godana.domain.dto.avatar.AvatarResDTO;
 import com.godana.domain.dto.post.PostCreReqDTO;
 import com.godana.domain.dto.post.PostCreResDTO;
+import com.godana.domain.dto.post.PostUpReqDTO;
+import com.godana.domain.dto.post.PostUpResDTO;
 import com.godana.domain.entity.Avatar;
 import com.godana.domain.entity.Category;
 import com.godana.domain.entity.Post;
@@ -20,10 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Transactional
 @Service
@@ -67,42 +66,57 @@ public class PostServiceImpl implements IPostService{
 
     @Override
     public PostCreResDTO createPost(PostCreReqDTO postCreReqDTO) {
-
         Optional<User> user = userRepository.findById(postCreReqDTO.getUserId());
         Optional<Category> category = categoryRepository.findById(postCreReqDTO.getCategoryId());
-
-        User user1 = user.get();
-        Category category1 = category.get();
 
         Post post = new Post()
                 .setPostTitle(postCreReqDTO.getPostTitle())
                 .setContent(postCreReqDTO.getContent())
-                .setUser(user1)
-                .setCategory(category1);
+                .setUser(user.get())
+                .setCategory(category.get());
         post = postRepository.save(post);
+        PostCreResDTO postResDTO = new PostCreResDTO();
+        if(postCreReqDTO.getImages() == null) {
+            postResDTO = post.toPostCreResDTO();
+        }
+        else {
+                List<Avatar> avatars = new ArrayList<>();
+            for (MultipartFile image : postCreReqDTO.getImages()) {
+                // Lưu ảnh vào hệ thống file
+                // avatar.setImageUrl(savedImageUrl);
 
+                Avatar avatar = new Avatar();
 
-        List<Avatar> avatars = new ArrayList<>();
-        for (MultipartFile image : postCreReqDTO.getImages()) {
-            // Lưu ảnh vào hệ thống file
-            // avatar.setImageUrl(savedImageUrl);
+                avatar.setPost(post);
+                avatar = avatarRepository.save(avatar);
 
-            Avatar avatar = new Avatar();
+                uploadAndSaveProductImage(image, avatar);
 
-            avatar.setPost(post);
-            avatar = avatarRepository.save(avatar);
-
-            uploadAndSaveProductImage(image, avatar);
-
-            // Đặt các thuộc tính của avatarResDTO từ avatar
+                // Đặt các thuộc tính của avatarResDTO từ avatar
 //            avatars.add(avatar.toAvatarResDTO());
-            avatars.add(avatar);
+                avatars.add(avatar);
         }
 
-        PostCreResDTO postResDTO = post.toPostCreResDTO(avatars);;
-//        postResDTO.setPostImages(avatars);
-
+            postResDTO = post.toPostCreResDTO(avatars);;
+        }
         return postResDTO;
+    }
+
+    @Override
+    public PostUpResDTO updatePost(PostUpReqDTO postUpReqDTO, Long postId) {
+        Optional<Post> optionalPost = postRepository.findById(postId);
+        Post post = optionalPost.get();
+        if(optionalPost.isPresent()) {
+            new DataInputException("Bài post muốn sửa không tồn tại vui lòng xem lại");
+        }
+        Long userId = optionalPost.get().getUser().getId();
+        if(!userId.equals(postUpReqDTO.getUserId())){
+            new DataInputException("Bài post này không phải của bạn không thể sửa đổi");
+        }
+        post.setPostTitle(postUpReqDTO.getPostTitle());
+        post.setContent(postUpReqDTO.getContent());
+        PostUpResDTO postUpResDTO = post.toPostUpResDTO(post.getPostImages());
+        return postUpResDTO;
     }
 
     public void uploadAndSaveProductImage(MultipartFile image, Avatar avatar) {

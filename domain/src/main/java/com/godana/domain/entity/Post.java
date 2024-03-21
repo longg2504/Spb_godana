@@ -2,6 +2,7 @@ package com.godana.domain.entity;
 
 import com.godana.domain.dto.avatar.AvatarResDTO;
 import com.godana.domain.dto.post.PostCreResDTO;
+import com.godana.domain.dto.post.PostUpResDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,14 +49,34 @@ public class Post extends BaseEntity{
     private List<Avatar> postImages;
 
 
-    public PostCreResDTO toPostCreResDTO(List<Avatar> avatars) {
-        return new PostCreResDTO()
-                .setId(null)
+
+    public PostUpResDTO toPostUpResDTO(List<Avatar> avatars) {
+        return new PostUpResDTO()
+                .setId(id)
                 .setPostTitle(postTitle)
                 .setContent(content)
                 .setUser(user.toUserDTO())
                 .setCategory(category.toCategoryDTO())
                 .setPostImages(toAvatarResDTOList(avatars));
+    }
+
+    public PostCreResDTO toPostCreResDTO(List<Avatar> avatars) {
+        return new PostCreResDTO()
+                .setId(id)
+                .setPostTitle(postTitle)
+                .setContent(content)
+                .setUser(user.toUserDTO())
+                .setCategory(category.toCategoryDTO())
+                .setPostImages(toAvatarResDTOList(avatars));
+    }
+
+    public PostCreResDTO toPostCreResDTO() {
+        return new PostCreResDTO()
+                .setId(id)
+                .setPostTitle(postTitle)
+                .setContent(content)
+                .setUser(user.toUserDTO())
+                .setCategory(category.toCategoryDTO());
     }
 
 
