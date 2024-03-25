@@ -1,11 +1,15 @@
 package com.godana.domain.entity;
 
+import com.godana.domain.dto.avatar.AvatarResDTO;
+import com.godana.domain.dto.place.PlaceCreResDTO;
+import com.godana.domain.enums.EPlaceStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -43,5 +47,49 @@ public class Place extends BaseEntity{
 
     @OneToMany(mappedBy = "place")
     private List<NearbyPlace> nearbyPlaceList;
+
+    @ManyToOne
+    @JoinColumn(name="user_Id" , referencedColumnName = "id" , nullable = false)
+    private User user;
+
+    @Enumerated(EnumType.STRING)
+    private EPlaceStatus status;
+
+    public PlaceCreResDTO toPlaceCreResDTO(){
+        return new PlaceCreResDTO()
+                .setId(id)
+                .setPlaceTitle(title)
+                .setContent(content)
+                .setLongitude(longitude)
+                .setLatitude(latitude)
+                .setCategory(category.toCategoryDTO())
+                .setLocationRegion(locationRegion.toLocationRegionDTO())
+                .setUser(user.toUserDTO())
+                .setStatus(status)
+                ;
+    }
+
+    public PlaceCreResDTO toPlaceCreResDTO(List<PlaceAvatar> placeAvatars){
+        return new PlaceCreResDTO()
+                .setId(id)
+                .setPlaceTitle(title)
+                .setContent(content)
+                .setLongitude(longitude)
+                .setLatitude(latitude)
+                .setCategory(category.toCategoryDTO())
+                .setLocationRegion(locationRegion.toLocationRegionDTO())
+                .setUser(user.toUserDTO())
+                .setStatus(status)
+                .setPlaceAvatar(toAvatarResDTOList(placeAvatars))
+                ;
+    }
+
+    public List<AvatarResDTO> toAvatarResDTOList(List<PlaceAvatar> placeAvatars){
+        List<AvatarResDTO> dtoList = new ArrayList<>();
+        for (PlaceAvatar placeAvatar : placeAvatars) {
+            dtoList.add(placeAvatar.toPlaceAvatarResDTO());
+        }
+        return dtoList;
+    }
 
 }

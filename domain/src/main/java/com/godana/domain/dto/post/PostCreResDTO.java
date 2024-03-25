@@ -3,7 +3,6 @@ package com.godana.domain.dto.post;
 import com.godana.domain.dto.avatar.AvatarResDTO;
 import com.godana.domain.dto.category.CategoryDTO;
 import com.godana.domain.dto.user.UserDTO;
-import com.godana.domain.entity.Avatar;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

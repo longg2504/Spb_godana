@@ -41,7 +41,7 @@ public class User extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "user_avatar_id" , referencedColumnName = "id")
-    private Avatar userAvatar;
+    private UserAvatar userAvatar;
 
     @Enumerated(EnumType.STRING)
     private EUserStatus status;
@@ -57,6 +57,9 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user")
     private List<Reply> replies;
+
+    @OneToMany(mappedBy = "user")
+    private List<Place> places;
 
     public UserDTO toUserDTO(){
         return new UserDTO()

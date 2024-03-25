@@ -1,29 +1,25 @@
 package com.godana.domain.entity;
-//
-//import com.godana.domain.dto.avatar.AvatarDTO;
-//import com.godana.domain.dto.avatar.AvatarResDTO;
+
 import com.godana.domain.dto.avatar.AvatarReqDTO;
 import com.godana.domain.dto.avatar.AvatarResDTO;
+import com.godana.domain.dto.placeAvatar.PlaceAvatarDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.apache.http.pool.PoolStats;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name="avatars")
+@Table(name="place_avatar")
 @Accessors(chain = true)
-public class Avatar extends BaseEntity {
+public class PlaceAvatar {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
@@ -48,13 +44,13 @@ public class Avatar extends BaseEntity {
 
     private Integer height;
 
-    @ManyToOne
-    @JoinColumn(name="post_image_id" , referencedColumnName = "id" )
-    private Post post;
+    @OneToOne
+    @JoinColumn(name="place_id" , referencedColumnName = "id" )
+    private Place place;
 
 
-    public AvatarReqDTO toAvatarDTO() {
-        return new AvatarReqDTO()
+    public PlaceAvatarDTO toPlaceAvatarDTO() {
+        return new PlaceAvatarDTO()
                 .setId(id)
                 .setFileName(fileName)
                 .setFileFolder(fileFolder)
@@ -64,8 +60,7 @@ public class Avatar extends BaseEntity {
                 .setHeight(height);
     }
 
-
-    public AvatarResDTO toAvatarResDTO() {
+    public AvatarResDTO toPlaceAvatarResDTO() {
         return new AvatarResDTO()
                 .setId(id)
                 .setFileName(fileName)
@@ -76,8 +71,4 @@ public class Avatar extends BaseEntity {
                 .setHeight(height)
                 ;
     }
-
-
-
-
 }
