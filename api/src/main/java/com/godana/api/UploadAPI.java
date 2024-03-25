@@ -1,6 +1,5 @@
 package com.godana.api;
 
-import com.godana.service.avatar.IAvatarService;
 import com.godana.service.upload.IUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,5 +1,6 @@
 package com.godana.domain.entity;
 
+import com.godana.domain.dto.contact.ContactDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,8 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.sql.Time;
+import java.time.LocalTime;
 
 @Entity
 @AllArgsConstructor
@@ -26,8 +29,23 @@ public class Contact extends BaseEntity {
 
     private String website;
 
+    private LocalTime openTime;
+
+    private LocalTime closeTime;
+
     @OneToOne
     @JoinColumn(name="place_id", referencedColumnName = "id" , nullable = false)
     private Place place;
+
+
+    public ContactDTO toContactDTO() {
+        return new ContactDTO()
+                .setId(id)
+                .setPhone(phone)
+                .setWebsite(website)
+                .setEmail(email)
+                .setOpenTime(openTime)
+                .setCloseTime(closeTime);
+    }
 
 }

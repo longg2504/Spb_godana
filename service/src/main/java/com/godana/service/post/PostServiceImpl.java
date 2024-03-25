@@ -1,16 +1,15 @@
 package com.godana.service.post;
 
-import com.godana.domain.dto.avatar.AvatarResDTO;
 import com.godana.domain.dto.post.PostCreReqDTO;
 import com.godana.domain.dto.post.PostCreResDTO;
 import com.godana.domain.dto.post.PostUpReqDTO;
 import com.godana.domain.dto.post.PostUpResDTO;
-import com.godana.domain.entity.Avatar;
+import com.godana.domain.entity.PostAvatar;
 import com.godana.domain.entity.Category;
 import com.godana.domain.entity.Post;
 import com.godana.domain.entity.User;
 import com.godana.exception.DataInputException;
-import com.godana.repository.avatar.AvatarRepository;
+import com.godana.repository.postAvatar.PostAvatarRepository;
 import com.godana.repository.category.CategoryRepository;
 import com.godana.repository.post.PostRepository;
 import com.godana.repository.user.UserRepository;
@@ -18,6 +17,7 @@ import com.godana.service.upload.IUploadService;
 import com.godana.utils.UploadUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
@@ -34,7 +34,7 @@ public class PostServiceImpl implements IPostService{
     @Autowired
     private CategoryRepository categoryRepository;
     @Autowired
-    private AvatarRepository avatarRepository;
+    private PostAvatarRepository postAvatarRepository;
     @Autowired
     private UploadUtils uploadUtils;
     @Autowired
@@ -80,24 +80,24 @@ public class PostServiceImpl implements IPostService{
             postResDTO = post.toPostCreResDTO();
         }
         else {
-                List<Avatar> avatars = new ArrayList<>();
+                List<PostAvatar> postAvatars = new ArrayList<>();
             for (MultipartFile image : postCreReqDTO.getImages()) {
                 // Lưu ảnh vào hệ thống file
                 // avatar.setImageUrl(savedImageUrl);
 
-                Avatar avatar = new Avatar();
+                PostAvatar postAvatar = new PostAvatar();
 
-                avatar.setPost(post);
-                avatar = avatarRepository.save(avatar);
+                postAvatar.setPost(post);
+                postAvatar = postAvatarRepository.save(postAvatar);
 
-                uploadAndSaveProductImage(image, avatar);
+                uploadAndSavePostImage(image, postAvatar);
 
                 // Đặt các thuộc tính của avatarResDTO từ avatar
 //            avatars.add(avatar.toAvatarResDTO());
-                avatars.add(avatar);
+                postAvatars.add(postAvatar);
         }
 
-            postResDTO = post.toPostCreResDTO(avatars);;
+            postResDTO = post.toPostCreResDTO(postAvatars);;
         }
         return postResDTO;
     }
@@ -119,23 +119,23 @@ public class PostServiceImpl implements IPostService{
         return postUpResDTO;
     }
 
-    public void uploadAndSaveProductImage(MultipartFile image, Avatar avatar) {
+    public void uploadAndSavePostImage(MultipartFile image, PostAvatar postAvatar) {
 
         try {
-            Map mapList =  iUploadService.uploadImage(image, uploadUtils.buildImageUploadParams(avatar));
+            Map mapList =  iUploadService.uploadImage(image, uploadUtils.buildImageUploadParams(postAvatar));
 
             String fileUrl = (String) mapList.get("secure_url");
             String fileFormat = (String) mapList.get("format");
             int width = (int) mapList.get("width");
             int height = (int) mapList.get("height");
 
-            avatar.setFileName(avatar.getId() + "." + fileFormat);
-            avatar.setFileUrl(fileUrl);
-            avatar.setFileFolder(UploadUtils.IMAGE_UPLOAD_FOLDER);
-            avatar.setCloudId(avatar.getFileFolder() + "/" + avatar.getId());
-            avatar.setWidth(width);
-            avatar.setHeight(height);
-            avatarRepository.save(avatar);
+            postAvatar.setFileName(postAvatar.getId() + "." + fileFormat);
+            postAvatar.setFileUrl(fileUrl);
+            postAvatar.setFileFolder(UploadUtils.IMAGE_UPLOAD_FOLDER);
+            postAvatar.setCloudId(postAvatar.getFileFolder() + "/" + postAvatar.getId());
+            postAvatar.setWidth(width);
+            postAvatar.setHeight(height);
+            postAvatarRepository.save(postAvatar);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -143,21 +143,21 @@ public class PostServiceImpl implements IPostService{
         }
     }
 
-    public void uploadAndSaveProductImages(PostCreReqDTO postCreReqDTOList, Avatar avatar) {
+    public void uploadAndSaveProductImages(PostCreReqDTO postCreReqDTOList, PostAvatar postAvatar) {
         List<MultipartFile> images = postCreReqDTOList.getImages();
 
         try {
-            List<Map> mapList =  iUploadService.uploadImages(images, uploadUtils.buildImageUploadParams(avatar));
+            List<Map> mapList =  iUploadService.uploadImages(images, uploadUtils.buildImageUploadParams(postAvatar));
 
             for (Map item : mapList) {
                 String fileUrl = (String) item.get("secure_url");
                 String fileFormat = (String) item.get("format");
 
-                avatar.setFileName(avatar.getId() + "." + fileFormat);
-                avatar.setFileUrl(fileUrl);
-                avatar.setFileFolder(UploadUtils.IMAGE_UPLOAD_FOLDER);
-                avatar.setCloudId(avatar.getFileFolder() + "/" + avatar.getId());
-                avatarRepository.save(avatar);
+                postAvatar.setFileName(postAvatar.getId() + "." + fileFormat);
+                postAvatar.setFileUrl(fileUrl);
+                postAvatar.setFileFolder(UploadUtils.IMAGE_UPLOAD_FOLDER);
+                postAvatar.setCloudId(postAvatar.getFileFolder() + "/" + postAvatar.getId());
+                postAvatarRepository.save(postAvatar);
             }
 
         } catch (IOException e) {

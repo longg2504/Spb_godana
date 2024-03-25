@@ -20,17 +20,13 @@ public class NearbyPlace extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nearby_title")
-    private String nearbyTitle;
-
-    @Column(name = "nearby_longtitude", length = 50)
-    private String nearbyLongtitude;
-
-    @Column(name= "nearby_latitude", length = 50)
-    private String nearbyLatitude;
-
     @ManyToOne
     @JoinColumn(name = "place_id" , referencedColumnName = "id" , nullable = false)
     private Place place;
+
+    //Place nearPlace
+    @ManyToOne
+    @JoinColumn(name = "near_by_place_id" , referencedColumnName = "id" , nullable = false)
+    private Place nearByPlace;
 
 }

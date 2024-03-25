@@ -46,28 +46,28 @@ public class Post extends BaseEntity{
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "post")
-    private List<Avatar> postImages;
+    private List<PostAvatar> postImages;
 
 
 
-    public PostUpResDTO toPostUpResDTO(List<Avatar> avatars) {
+    public PostUpResDTO toPostUpResDTO(List<PostAvatar> postAvatars) {
         return new PostUpResDTO()
                 .setId(id)
                 .setPostTitle(postTitle)
                 .setContent(content)
                 .setUser(user.toUserDTO())
                 .setCategory(category.toCategoryDTO())
-                .setPostImages(toAvatarResDTOList(avatars));
+                .setPostImages(toAvatarResDTOList(postAvatars));
     }
 
-    public PostCreResDTO toPostCreResDTO(List<Avatar> avatars) {
+    public PostCreResDTO toPostCreResDTO(List<PostAvatar> postAvatars) {
         return new PostCreResDTO()
                 .setId(id)
                 .setPostTitle(postTitle)
                 .setContent(content)
                 .setUser(user.toUserDTO())
                 .setCategory(category.toCategoryDTO())
-                .setPostImages(toAvatarResDTOList(avatars));
+                .setPostImages(toAvatarResDTOList(postAvatars));
     }
 
     public PostCreResDTO toPostCreResDTO() {
@@ -80,10 +80,10 @@ public class Post extends BaseEntity{
     }
 
 
-    public List<AvatarResDTO> toAvatarResDTOList(List<Avatar> avatars){
+    public List<AvatarResDTO> toAvatarResDTOList(List<PostAvatar> postAvatars){
         List<AvatarResDTO> dtoList = new ArrayList<>();
-        for (Avatar avatar : avatars) {
-            dtoList.add(avatar.toAvatarResDTO());
+        for (PostAvatar postAvatar : postAvatars) {
+            dtoList.add(postAvatar.toAvatarResDTO());
         }
         return dtoList;
     }

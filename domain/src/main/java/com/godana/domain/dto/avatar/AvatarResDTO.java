@@ -1,6 +1,8 @@
 package com.godana.domain.dto.avatar;
 
-import com.godana.domain.entity.Avatar;
+import com.godana.domain.entity.PlaceAvatar;
+import com.godana.domain.entity.PostAvatar;
+import com.godana.domain.entity.UserAvatar;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,8 +23,30 @@ public class AvatarResDTO {
     private Integer width;
     private Integer height;
 
-    public Avatar toAvatar() {
-        return new Avatar()
+    public PostAvatar toAvatar() {
+        return new PostAvatar()
+                .setId(id)
+                .setFileName(fileName)
+                .setFileFolder(fileFolder)
+                .setFileUrl(fileUrl)
+                .setCloudId(cloudId)
+                .setWidth(width)
+                .setHeight(height);
+    }
+
+    public UserAvatar toUserAvatar() {
+        return new UserAvatar()
+                .setId(id)
+                .setFileName(fileName)
+                .setFileFolder(fileFolder)
+                .setFileUrl(fileUrl)
+                .setCloudId(cloudId)
+                .setWidth(width)
+                .setHeight(height);
+    }
+
+    public PlaceAvatar toPlaceAvatar() {
+        return new PlaceAvatar()
                 .setId(id)
                 .setFileName(fileName)
                 .setFileFolder(fileFolder)

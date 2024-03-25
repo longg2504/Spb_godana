@@ -1,7 +1,8 @@
 package com.godana.utils;
 
-import com.godana.domain.entity.Avatar;
+import com.godana.domain.entity.PostAvatar;
 
+import com.godana.domain.entity.PlaceAvatar;
 import com.godana.exception.DataInputException;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.stereotype.Component;
@@ -11,11 +12,13 @@ import java.util.Map;
 @Component
 public class UploadUtils {
     public static final String IMAGE_UPLOAD_FOLDER = "postImage";
-    public static final String IMAGE_UPLOAD_FOLDER_1 = "user";
+    public static final String IMAGE_UPLOAD_FOLDER_USER = "user";
+
+    public static final String IMAGE_UPLOAD_FOLDER_PLACE = "place";
 
 
 
-    public Map buildImageUploadParams(Avatar postImage) {
+    public Map buildImageUploadParams(PostAvatar postImage) {
         if (postImage == null || postImage.getId() == null)
             throw new DataInputException("Không thể upload hình ảnh chưa được lưu");
 
@@ -29,11 +32,24 @@ public class UploadUtils {
     }
 
 
-    public Map buildImageUploadParamsStaff(Avatar staffAvatar) {
-        if (staffAvatar == null || staffAvatar.getId() == null)
+    public Map buildImageUploadParamsUser(PostAvatar userPostAvatar) {
+        if (userPostAvatar == null || userPostAvatar.getId() == null)
             throw new DataInputException("Không thể upload hình ảnh chưa được lưu");
 
-        String publicId = String.format("%s/%s", IMAGE_UPLOAD_FOLDER_1, staffAvatar.getId());
+        String publicId = String.format("%s/%s", IMAGE_UPLOAD_FOLDER_USER, userPostAvatar.getId());
+
+        return ObjectUtils.asMap(
+                "public_id", publicId,
+                "overwrite", true,
+                "resource_type", "image"
+        );
+    }
+
+    public Map buildImageUploadParamsPlace(PlaceAvatar placeAvatar) {
+        if (placeAvatar == null || placeAvatar.getId() == null)
+            throw new DataInputException("Không thể upload hình ảnh chưa được lưu");
+
+        String publicId = String.format("%s/%s", IMAGE_UPLOAD_FOLDER_PLACE, placeAvatar.getId());
 
         return ObjectUtils.asMap(
                 "public_id", publicId,

@@ -24,6 +24,9 @@ public class    Comment extends BaseEntity{
     @Column(length = 500)
     private String content;
 
+//    @ManyToOne
+//    private Comment commentParent;
+
     @ManyToOne
     @JoinColumn(name = "post_id", referencedColumnName = "id" , nullable = false)
     private Post post;
@@ -34,4 +37,6 @@ public class    Comment extends BaseEntity{
 
     @OneToMany(mappedBy = "comment")
     private List<Reply> replies;
+//    @OneToMany(mappedBy = "commentParent")
+//    private List<Comment> comments;
 }

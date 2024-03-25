@@ -1,46 +1,29 @@
-package com.godana.domain.entity;
+package com.godana.domain.dto.locationRegion;
 
-import com.godana.domain.dto.locationRegion.LocationRegionDTO;
+import com.godana.domain.entity.LocationRegion;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import javax.persistence.*;
-import java.util.List;
-
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name="location_region")
 @Accessors(chain = true)
-public class LocationRegion {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class LocationRegionDTO {
     private Long id;
-
-    @Column(name = "province_id")
     private String provinceId;
-    @Column(name = "province_name")
     private String provinceName;
-
-    @Column(name = "district_id")
     private String districtId;
-    @Column(name = "district_name")
     private String districtName;
-
-    @Column(name = "ward_id")
     private String wardId;
-    @Column(name = "ward_name")
     private String wardName;
-
     private String address;
 
-    public LocationRegionDTO toLocationRegionDTO(){
-        return new LocationRegionDTO()
+    public LocationRegion toLocationRegion(){
+        return new LocationRegion()
                 .setId(id)
                 .setProvinceId(provinceId)
                 .setProvinceName(provinceName)
@@ -50,5 +33,4 @@ public class LocationRegion {
                 .setWardName(wardName)
                 .setAddress(address);
     }
-
 }

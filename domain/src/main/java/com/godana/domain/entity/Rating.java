@@ -31,4 +31,6 @@ public class Rating extends BaseEntity{
 
     private double rating;
 
+    private String content;
+
 }

@@ -17,15 +17,15 @@ public class JwtResponse {
     private String type = "Bearer";
     private String username;
     private String name;
-    private Avatar staffAvatar;
+    private PostAvatar staffPostAvatar;
     private Collection<? extends GrantedAuthority> roles;
 
-    public JwtResponse(String accessToken, Long id, String username, String name, Avatar staffAvatar , Collection<? extends GrantedAuthority> roles) {
+    public JwtResponse(String accessToken, Long id, String username, String name, PostAvatar staffPostAvatar, Collection<? extends GrantedAuthority> roles) {
         this.token = accessToken;
         this.id = id;
         this.username = username;
         this.name = name;
-        this.staffAvatar = staffAvatar;
+        this.staffPostAvatar = staffPostAvatar;
         this.roles = roles;
     }
 
@@ -47,7 +47,7 @@ public class JwtResponse {
                 ", type='" + type + '\'' +
                 ", username='" + username + '\'' +
                 ", name='" + name + '\'' +
-                ", staffAvatar='" + staffAvatar + '\'' +
+                ", staffAvatar='" + staffPostAvatar + '\'' +
                 ", roles=" + roles +
                 '}';
     }
