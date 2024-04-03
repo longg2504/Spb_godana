@@ -1,6 +1,6 @@
 package com.godana.domain.entity;
 
-import com.godana.domain.dto.avatar.AvatarResDTO;
+import com.godana.domain.dto.postAvatar.PostAvatarResDTO;
 import com.godana.domain.dto.post.PostCreResDTO;
 import com.godana.domain.dto.post.PostUpResDTO;
 import lombok.AllArgsConstructor;
@@ -80,8 +80,8 @@ public class Post extends BaseEntity{
     }
 
 
-    public List<AvatarResDTO> toAvatarResDTOList(List<PostAvatar> postAvatars){
-        List<AvatarResDTO> dtoList = new ArrayList<>();
+    public List<PostAvatarResDTO> toAvatarResDTOList(List<PostAvatar> postAvatars){
+        List<PostAvatarResDTO> dtoList = new ArrayList<>();
         for (PostAvatar postAvatar : postAvatars) {
             dtoList.add(postAvatar.toAvatarResDTO());
         }

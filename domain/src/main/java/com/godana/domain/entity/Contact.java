@@ -33,11 +33,6 @@ public class Contact extends BaseEntity {
 
     private LocalTime closeTime;
 
-    @OneToOne
-    @JoinColumn(name="place_id", referencedColumnName = "id" , nullable = false)
-    private Place place;
-
-
     public ContactDTO toContactDTO() {
         return new ContactDTO()
                 .setId(id)

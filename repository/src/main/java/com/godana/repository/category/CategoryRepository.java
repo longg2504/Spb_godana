@@ -15,6 +15,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     List<CategoryDTO> findAllCategoryDTO();
 
     Optional<Category> findByIdAndDeletedFalse(Long id);
-
+    
     Boolean existsByTitle(String title);
+
 }

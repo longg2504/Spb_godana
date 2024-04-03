@@ -2,8 +2,8 @@ package com.godana.domain.entity;
 //
 //import com.godana.domain.dto.avatar.AvatarDTO;
 //import com.godana.domain.dto.avatar.AvatarResDTO;
-import com.godana.domain.dto.avatar.AvatarReqDTO;
-import com.godana.domain.dto.avatar.AvatarResDTO;
+import com.godana.domain.dto.postAvatar.PostAvatarReqDTO;
+import com.godana.domain.dto.postAvatar.PostAvatarResDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -50,8 +50,8 @@ public class PostAvatar extends BaseEntity {
     private Post post;
 
 
-    public AvatarReqDTO toAvatarDTO() {
-        return new AvatarReqDTO()
+    public PostAvatarReqDTO toAvatarDTO() {
+        return new PostAvatarReqDTO()
                 .setId(id)
                 .setFileName(fileName)
                 .setFileFolder(fileFolder)
@@ -62,8 +62,8 @@ public class PostAvatar extends BaseEntity {
     }
 
 
-    public AvatarResDTO toAvatarResDTO() {
-        return new AvatarResDTO()
+    public PostAvatarResDTO toAvatarResDTO() {
+        return new PostAvatarResDTO()
                 .setId(id)
                 .setFileName(fileName)
                 .setFileFolder(fileFolder)

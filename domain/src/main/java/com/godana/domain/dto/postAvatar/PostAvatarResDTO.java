@@ -1,4 +1,4 @@
-package com.godana.domain.dto.avatar;
+package com.godana.domain.dto.postAvatar;
 
 import com.godana.domain.entity.PlaceAvatar;
 import com.godana.domain.entity.PostAvatar;
@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class AvatarResDTO {
+public class PostAvatarResDTO {
     private String id;
     private String fileName;
     private String fileFolder;

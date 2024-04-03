@@ -1,5 +1,7 @@
 package com.godana.service.placeAvatar;
 
+import com.godana.domain.dto.placeAvatar.PlaceAvatarDTO;
+import com.godana.domain.entity.Place;
 import com.godana.domain.entity.PlaceAvatar;
 import com.godana.repository.placeAvatar.PlaceAvatarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +39,10 @@ public class PlaceAvatarServiceImpl implements IPlaceAvatarService{
     @Override
     public void deleteById(String id) {
 
+    }
+
+    @Override
+    public List<PlaceAvatar> findAllByPlace(Place place) {
+        return placeAvatarRepository.findAllByPlace(place);
     }
 }

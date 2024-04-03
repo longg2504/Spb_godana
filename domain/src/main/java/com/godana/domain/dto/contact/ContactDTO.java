@@ -17,10 +17,7 @@ public class ContactDTO {
     private Long id;
     private String email;
     private String phone;
-
     private String website;
-
     private LocalTime openTime;
-
     private LocalTime closeTime;
 }

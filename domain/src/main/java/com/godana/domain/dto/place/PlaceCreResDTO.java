@@ -1,10 +1,10 @@
 package com.godana.domain.dto.place;
 
-import com.godana.domain.dto.avatar.AvatarResDTO;
+import com.godana.domain.dto.placeAvatar.PlaceAvatarDTO;
+import com.godana.domain.dto.postAvatar.PostAvatarResDTO;
 import com.godana.domain.dto.category.CategoryDTO;
 import com.godana.domain.dto.contact.ContactDTO;
 import com.godana.domain.dto.locationRegion.LocationRegionDTO;
-import com.godana.domain.dto.placeAvatar.PlaceAvatarDTO;
 import com.godana.domain.dto.user.UserDTO;
 import com.godana.domain.enums.EPlaceStatus;
 import lombok.AllArgsConstructor;
@@ -26,7 +26,7 @@ public class PlaceCreResDTO {
     private String content;
     private String longitude;
     private String latitude;
-    private List<AvatarResDTO> placeAvatar;
+    private List<PlaceAvatarDTO> placeAvatar;
     private CategoryDTO category;
     private LocationRegionDTO locationRegion;
     private ContactDTO contact;

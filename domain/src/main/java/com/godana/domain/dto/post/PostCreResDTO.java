@@ -1,6 +1,6 @@
 package com.godana.domain.dto.post;
 
-import com.godana.domain.dto.avatar.AvatarResDTO;
+import com.godana.domain.dto.postAvatar.PostAvatarResDTO;
 import com.godana.domain.dto.category.CategoryDTO;
 import com.godana.domain.dto.user.UserDTO;
 import lombok.AllArgsConstructor;
@@ -21,5 +21,5 @@ public class PostCreResDTO {
     private String content;
     private UserDTO user;
     private CategoryDTO category;
-    private List<AvatarResDTO> postImages;
+    private List<PostAvatarResDTO> postImages;
 }

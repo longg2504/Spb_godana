@@ -52,14 +52,13 @@ public class PlaceCreReqDTO {
                 .setAddress(address)
                 ;
     }
-    public Contact toContact(Place place){
+    public Contact toContact(){
         return new Contact()
                 .setEmail(email)
                 .setWebsite(website)
                 .setPhone(phone)
                 .setOpenTime(LocalTime.parse(openTime))
                 .setCloseTime(LocalTime.parse(closeTime))
-                .setPlace(place)
                 ;
 
     }

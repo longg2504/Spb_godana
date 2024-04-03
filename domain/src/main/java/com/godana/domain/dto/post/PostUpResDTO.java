@@ -1,17 +1,13 @@
 package com.godana.domain.dto.post;
 
-import com.godana.domain.dto.avatar.AvatarResDTO;
+import com.godana.domain.dto.postAvatar.PostAvatarResDTO;
 import com.godana.domain.dto.category.CategoryDTO;
 import com.godana.domain.dto.user.UserDTO;
-import com.godana.domain.entity.Comment;
-import com.godana.domain.entity.Like;
-import com.godana.domain.entity.Reply;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -26,5 +22,5 @@ public class PostUpResDTO {
     private String content;
     private UserDTO user;
     private CategoryDTO category;
-    private List<AvatarResDTO> postImages;
+    private List<PostAvatarResDTO> postImages;
 }

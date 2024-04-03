@@ -1,7 +1,6 @@
 package com.godana.domain.entity;
 
-import com.godana.domain.dto.avatar.AvatarReqDTO;
-import com.godana.domain.dto.avatar.AvatarResDTO;
+import com.godana.domain.dto.postAvatar.PostAvatarResDTO;
 import com.godana.domain.dto.placeAvatar.PlaceAvatarDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,7 +43,7 @@ public class PlaceAvatar {
 
     private Integer height;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="place_id" , referencedColumnName = "id" )
     private Place place;
 
@@ -60,15 +59,4 @@ public class PlaceAvatar {
                 .setHeight(height);
     }
 
-    public AvatarResDTO toPlaceAvatarResDTO() {
-        return new AvatarResDTO()
-                .setId(id)
-                .setFileName(fileName)
-                .setFileFolder(fileFolder)
-                .setFileUrl(fileUrl)
-                .setCloudId(cloudId)
-                .setWidth(width)
-                .setHeight(height)
-                ;
-    }
 }

@@ -2,6 +2,8 @@ package com.godana.service.place;
 
 import com.godana.domain.dto.place.PlaceCreReqDTO;
 import com.godana.domain.dto.place.PlaceCreResDTO;
+import com.godana.domain.dto.place.PlaceDTO;
+import com.godana.domain.dto.placeAvatar.PlaceAvatarDTO;
 import com.godana.domain.entity.*;
 import com.godana.domain.enums.EPlaceStatus;
 import com.godana.exception.DataInputException;
@@ -11,9 +13,12 @@ import com.godana.repository.locationRegion.LocationRegionRepository;
 import com.godana.repository.place.PlaceRepository;
 import com.godana.repository.placeAvatar.PlaceAvatarRepository;
 import com.godana.repository.user.UserRepository;
+import com.godana.service.placeAvatar.IPlaceAvatarService;
 import com.godana.service.upload.IUploadService;
 import com.godana.utils.UploadUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -48,6 +53,25 @@ public class PlaceServiceImpl implements IPlaceService {
     @Override
     public List<Place> findAll() {
         return placeRepository.findAll();
+    }
+
+
+
+    @Override
+    public Page<PlaceDTO> findAllByCategoryAndSearch(Category category, String search,Pageable pageable) {
+        Page<PlaceDTO> placeDTOS = placeRepository.findAllByCategoryAndSearch(category, search,pageable);
+        List<PlaceAvatarDTO> placeAvatarDTOS = new ArrayList<>();
+        for(PlaceDTO placeDTO : placeDTOS){
+            Long placeId = placeDTO.getId();
+            Optional<Place> placeOptional = placeRepository.findById(placeId);
+            List<PlaceAvatar> placeAvatars = placeAvatarRepository.findAllByPlace(placeOptional.get());
+            placeAvatarDTOS = toAvatarDTOList(placeAvatars);
+
+            placeDTO.setPlaceAvatar(placeAvatarDTOS);
+
+        }
+
+        return placeDTOS;
     }
 
     @Override
@@ -85,6 +109,8 @@ public class PlaceServiceImpl implements IPlaceService {
             new DataInputException(("User không tồn tại vui lòng xem lại !!!"));
         }
         User user = userOptional.get();
+        Contact contact = placeCreReqDTO.toContact();
+        contact = contactRepository.save(contact);
         Place place = new Place()
                 .setTitle(placeCreReqDTO.getPlaceTitle())
                 .setContent(placeCreReqDTO.getContent())
@@ -93,10 +119,10 @@ public class PlaceServiceImpl implements IPlaceService {
                 .setCategory(category)
                 .setLocationRegion(locationRegion)
                 .setUser(user)
+                .setContact(contact)
                 .setStatus(EPlaceStatus.DONE);
         place = placeRepository.save(place);
-        Contact contact = placeCreReqDTO.toContact(place);
-        contact = contactRepository.save(contact);
+
         PlaceCreResDTO placeCreResDTO = new PlaceCreResDTO();
         if (placeCreReqDTO.getPlaceAvatar() == null) {
             placeCreResDTO = place.toPlaceCreResDTO();
@@ -146,5 +172,13 @@ public class PlaceServiceImpl implements IPlaceService {
             e.printStackTrace();
             throw new DataInputException("Upload hình ảnh thất bại");
         }
+    }
+
+    public List<PlaceAvatarDTO> toAvatarDTOList(List<PlaceAvatar> placeAvatars){
+        List<PlaceAvatarDTO> dtoList = new ArrayList<>();
+        for (PlaceAvatar placeAvatar : placeAvatars) {
+            dtoList.add(placeAvatar.toPlaceAvatarDTO());
+        }
+        return dtoList;
     }
 }
