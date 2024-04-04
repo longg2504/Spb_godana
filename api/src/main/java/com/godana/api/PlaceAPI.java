@@ -8,6 +8,8 @@ import com.godana.domain.entity.Place;
 import com.godana.exception.DataInputException;
 import com.godana.service.category.ICategoryService;
 import com.godana.service.place.IPlaceService;
+import com.godana.utils.AppUtils;
+import com.godana.utils.ValidateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +29,10 @@ public class PlaceAPI {
     private IPlaceService iPlaceService;
     @Autowired
     private ICategoryService iCategoryService;
+    @Autowired
+    private ValidateUtils validateUtils;
+    @Autowired
+    private AppUtils appUtils;
 
 
     @GetMapping
@@ -36,6 +42,22 @@ public class PlaceAPI {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(placeDTOS, HttpStatus.OK);
+    }
+
+    @GetMapping("/{placeId}")
+    public ResponseEntity<?> getByPlaceId(@PathVariable("placeId") String placeIdStr){
+        if(!validateUtils.isNumberValid(placeIdStr)){
+            throw new DataInputException("Mã địa điểm không tồn tại vui lòng xem lại!!!");
+        }
+        Long placeId = Long.valueOf(placeIdStr);
+
+        Optional<Place> placeOptional = iPlaceService.findById(placeId);
+        if(placeOptional.isEmpty()){
+            throw new DataInputException(("Địa điểm không tồn tại vui lòng xem lại!!!"));
+        }
+        Place place = placeOptional.get();
+        PlaceDTO placeDTO = place.toPlaceDTO(place.getPlaceAvatarList());
+        return new ResponseEntity<>(placeDTO, HttpStatus.OK);
     }
 
     @PostMapping

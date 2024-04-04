@@ -103,6 +103,7 @@ public class Place extends BaseEntity{
                 .setCategory(category.toCategoryDTO())
                 .setLocationRegion(locationRegion.toLocationRegionDTO())
                 .setContact(contact.toContactDTO())
+                .setPlaceAvatar(toAvatarDTOList(placeAvatarList))
                 ;
     }
 
