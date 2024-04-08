@@ -3,6 +3,7 @@ package com.godana.utils;
 import com.godana.domain.entity.PostAvatar;
 
 import com.godana.domain.entity.PlaceAvatar;
+import com.godana.domain.entity.UserAvatar;
 import com.godana.exception.DataInputException;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.stereotype.Component;
@@ -32,11 +33,11 @@ public class UploadUtils {
     }
 
 
-    public Map buildImageUploadParamsUser(PostAvatar userPostAvatar) {
-        if (userPostAvatar == null || userPostAvatar.getId() == null)
+    public Map buildImageUploadParamsUser(UserAvatar userAvatar) {
+        if (userAvatar == null || userAvatar.getId() == null)
             throw new DataInputException("Không thể upload hình ảnh chưa được lưu");
 
-        String publicId = String.format("%s/%s", IMAGE_UPLOAD_FOLDER_USER, userPostAvatar.getId());
+        String publicId = String.format("%s/%s", IMAGE_UPLOAD_FOLDER_USER, userAvatar.getId());
 
         return ObjectUtils.asMap(
                 "public_id", publicId,
