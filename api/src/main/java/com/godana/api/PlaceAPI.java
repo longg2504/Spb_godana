@@ -1,8 +1,6 @@
 package com.godana.api;
 
-import com.godana.domain.dto.place.PlaceCreReqDTO;
-import com.godana.domain.dto.place.PlaceCreResDTO;
-import com.godana.domain.dto.place.PlaceDTO;
+import com.godana.domain.dto.place.*;
 import com.godana.domain.entity.Category;
 import com.godana.domain.entity.Place;
 import com.godana.exception.DataInputException;
@@ -64,5 +62,11 @@ public class PlaceAPI {
     public ResponseEntity<?> createPlace(@ModelAttribute PlaceCreReqDTO placeCreReqDTO){
         PlaceCreResDTO placeCreResDTO = iPlaceService.create(placeCreReqDTO);
         return new ResponseEntity<>(placeCreResDTO, HttpStatus.OK);
+    }
+
+    @PostMapping("/{placeId}")
+    public ResponseEntity<?> updatePlace(@PathVariable("placeId") String placeIdStr, PlaceUpReqDTO placeUpReqDTO){
+        PlaceUpResDTO placeUpResDTO = iPlaceService.update(placeIdStr,placeUpReqDTO);
+        return new ResponseEntity<>(placeUpResDTO, HttpStatus.OK);
     }
 }

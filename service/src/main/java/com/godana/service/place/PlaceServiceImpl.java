@@ -1,8 +1,6 @@
 package com.godana.service.place;
 
-import com.godana.domain.dto.place.PlaceCreReqDTO;
-import com.godana.domain.dto.place.PlaceCreResDTO;
-import com.godana.domain.dto.place.PlaceDTO;
+import com.godana.domain.dto.place.*;
 import com.godana.domain.dto.placeAvatar.PlaceAvatarDTO;
 import com.godana.domain.entity.*;
 import com.godana.domain.enums.EPlaceStatus;
@@ -13,9 +11,11 @@ import com.godana.repository.locationRegion.LocationRegionRepository;
 import com.godana.repository.place.PlaceRepository;
 import com.godana.repository.placeAvatar.PlaceAvatarRepository;
 import com.godana.repository.user.UserRepository;
+import com.godana.service.category.ICategoryService;
 import com.godana.service.placeAvatar.IPlaceAvatarService;
 import com.godana.service.upload.IUploadService;
 import com.godana.utils.UploadUtils;
+import com.godana.utils.ValidateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -49,6 +49,12 @@ public class PlaceServiceImpl implements IPlaceService {
     private UploadUtils uploadUtils;
     @Autowired
     private IUploadService iUploadService;
+    @Autowired
+    private ValidateUtils validateUtils;
+    @Autowired
+    private IPlaceService iPlaceService;
+    @Autowired
+    private ICategoryService iCategoryService;
 
     @Override
     public List<Place> findAll() {
@@ -72,6 +78,11 @@ public class PlaceServiceImpl implements IPlaceService {
         }
 
         return placeDTOS;
+    }
+
+    @Override
+    public Optional<Place> findPlaceByIdAndDeletedFalse(Long id) {
+        return placeRepository.findPlaceByIdAndDeletedFalse(id);
     }
 
     @Override
@@ -148,6 +159,60 @@ public class PlaceServiceImpl implements IPlaceService {
         placeCreResDTO.setContact(contact.toContactDTO());
         return placeCreResDTO;
 
+    }
+
+    @Override
+    public PlaceUpResDTO update(String placeIdStr, PlaceUpReqDTO placeUpReqDTO) {
+        if (!validateUtils.isNumberValid(placeIdStr)) {
+            throw new DataInputException("Mã địa điểm không hợp lệ !!!");
+        }
+
+        Long placeId = Long.parseLong(placeIdStr);
+        Optional<Place> optionalPlace = iPlaceService.findPlaceByIdAndDeletedFalse(placeId);
+        if (!optionalPlace.isPresent()) {
+            throw new DataInputException("Địa điểm này không tồn tại !!!");
+        }
+        Optional<Category> optionalCategory = iCategoryService.findByIdAndDeletedFalse(placeUpReqDTO.getCategoryId());
+        if (!optionalCategory.isPresent()) {
+            throw new DataInputException("Category này không tồn tại !!!");
+        }
+        Optional<User> userOptional = userRepository.findById(placeUpReqDTO.getUserId());
+        if (userOptional.isPresent()) {
+            new DataInputException(("User không tồn tại vui lòng xem lại !!!"));
+        }
+        User user = userOptional.get();
+
+        Category category = optionalCategory.get();
+
+        Long locationRegionId = optionalPlace.get().getLocationRegion().getId();
+        LocationRegion locationRegion = placeUpReqDTO.toLocationRegion(locationRegionId);
+        locationRegion = locationRegionRepository.save(locationRegion);
+
+        Long contactId = optionalPlace.get().getContact().getId();
+        Contact contact = placeUpReqDTO.toContact(contactId);
+        contact = contactRepository.save(contact);
+
+        Place place = placeUpReqDTO.toPlace(placeId, category, locationRegion, user, contact);
+        place.setStatus(optionalPlace.get().getStatus());
+        PlaceUpResDTO placeUpResDTO = new PlaceUpResDTO();
+        if (placeUpReqDTO.getPlaceAvatar() == null) {
+            place.setPlaceAvatarList(optionalPlace.get().getPlaceAvatarList());
+            place = placeRepository.save(place);
+            placeUpResDTO = place.toPlaceUpResDTO();
+
+        } else {
+            List<PlaceAvatar> placeAvatars = new ArrayList<>();
+            for (MultipartFile image : placeUpReqDTO.getPlaceAvatar()) {
+                PlaceAvatar placeAvatar = new PlaceAvatar();
+                placeAvatar.setPlace(place);
+                placeAvatar = placeAvatarRepository.save(placeAvatar);
+                uploadAndSavePlaceImage(image, placeAvatar);
+
+                placeAvatars.add(placeAvatar);
+            }
+            placeUpResDTO = place.toPlaceUpResDTO(placeAvatars);
+        }
+        return placeUpResDTO;
     }
 
     public void uploadAndSavePlaceImage(MultipartFile image, PlaceAvatar placeAvatar) {

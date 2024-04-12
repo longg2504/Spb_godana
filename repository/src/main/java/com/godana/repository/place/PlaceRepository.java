@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -36,5 +37,5 @@ public interface PlaceRepository extends JpaRepository<Place,Long> {
     )
     Page<PlaceDTO> findAllByCategoryAndSearch(@Param("category") Category category, @Param("search") String search, Pageable pageable);
 
-
+    Optional<Place> findPlaceByIdAndDeletedFalse(Long id);
 }

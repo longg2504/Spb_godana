@@ -1,6 +1,7 @@
 package com.godana.domain.entity;
 
 import com.godana.domain.dto.place.PlaceDTO;
+import com.godana.domain.dto.place.PlaceUpResDTO;
 import com.godana.domain.dto.placeAvatar.PlaceAvatarDTO;
 import com.godana.domain.dto.postAvatar.PostAvatarResDTO;
 import com.godana.domain.dto.place.PlaceCreResDTO;
@@ -75,6 +76,7 @@ public class Place extends BaseEntity{
                 .setLocationRegion(locationRegion.toLocationRegionDTO())
                 .setUser(user.toUserDTO())
                 .setStatus(status)
+                .setContact(contact.toContactDTO())
                 ;
     }
 
@@ -90,6 +92,39 @@ public class Place extends BaseEntity{
                 .setUser(user.toUserDTO())
                 .setStatus(status)
                 .setPlaceAvatar(toAvatarDTOList(placeAvatars))
+                .setContact(contact.toContactDTO())
+                ;
+    }
+
+
+    public PlaceUpResDTO toPlaceUpResDTO(){
+        return new PlaceUpResDTO()
+                .setId(id)
+                .setPlaceTitle(title)
+                .setContent(content)
+                .setLongitude(longitude)
+                .setLatitude(latitude)
+                .setCategory(category.toCategoryDTO())
+                .setLocationRegion(locationRegion.toLocationRegionDTO())
+                .setUser(user.toUserDTO())
+                .setStatus(status)
+                .setContact(contact.toContactDTO())
+                ;
+    }
+
+    public PlaceUpResDTO toPlaceUpResDTO(List<PlaceAvatar> placeAvatars){
+        return new PlaceUpResDTO()
+                .setId(id)
+                .setPlaceTitle(title)
+                .setContent(content)
+                .setLongitude(longitude)
+                .setLatitude(latitude)
+                .setCategory(category.toCategoryDTO())
+                .setLocationRegion(locationRegion.toLocationRegionDTO())
+                .setUser(user.toUserDTO())
+                .setStatus(status)
+                .setPlaceAvatar(toAvatarDTOList(placeAvatars))
+                .setContact(contact.toContactDTO())
                 ;
     }
 
