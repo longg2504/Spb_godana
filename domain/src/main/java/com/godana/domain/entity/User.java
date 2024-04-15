@@ -56,16 +56,15 @@ public class  User extends BaseEntity {
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "user")
-    private List<Reply> replies;
-
-    @OneToMany(mappedBy = "user")
     private List<Place> places;
 
     public UserDTO toUserDTO(){
         return new UserDTO()
                 .setId(id)
                 .setUsername(username)
-                .setRole(role.toRoleDTO());
+                .setRole(role.toRoleDTO())
+                .setAvatar(userAvatar)
+                ;
     }
     @Override
     public String toString() {

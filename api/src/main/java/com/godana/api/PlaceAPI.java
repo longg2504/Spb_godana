@@ -1,8 +1,10 @@
 package com.godana.api;
 
 import com.godana.domain.dto.place.*;
+import com.godana.domain.dto.rating.RatingStats;
 import com.godana.domain.entity.Category;
 import com.godana.domain.entity.Place;
+import com.godana.domain.entity.Rating;
 import com.godana.exception.DataInputException;
 import com.godana.service.category.ICategoryService;
 import com.godana.service.place.IPlaceService;
@@ -11,7 +13,6 @@ import com.godana.utils.ValidateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -54,8 +55,22 @@ public class PlaceAPI {
             throw new DataInputException(("Địa điểm không tồn tại vui lòng xem lại!!!"));
         }
         Place place = placeOptional.get();
-        PlaceDTO placeDTO = place.toPlaceDTO(place.getPlaceAvatarList());
+        Double rating = calculateAverage(place.getRatingList()).getAverageRating();
+        Long numberRating = calculateAverage(place.getRatingList()).getNumberOfRatings();
+        PlaceDTO placeDTO = place.toPlaceDTO(place.getPlaceAvatarList(),rating,numberRating);
         return new ResponseEntity<>(placeDTO, HttpStatus.OK);
+    }
+    private RatingStats calculateAverage(List<Rating> ratings) {
+        if (ratings == null || ratings.isEmpty()) {
+            return new RatingStats(0.0, 0L);
+        }
+
+        Double sum = 0.0;
+        for (Rating rating : ratings) {
+            sum += rating.getRating();
+        }
+        double averageRating = sum / ratings.size();
+        return new RatingStats(averageRating, (long) ratings.size());
     }
 
     @PostMapping

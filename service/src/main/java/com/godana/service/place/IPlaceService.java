@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public interface IPlaceService extends IGeneralService<Place, Long> {
 
-
+    Optional<PlaceDTO> findPlaceById(Long id);
     Page<PlaceDTO> findAllByCategoryAndSearch(@Param("category") Category category, @Param("search") String search, Pageable pageable);
     Optional<Place> findPlaceByIdAndDeletedFalse(Long id);
     PlaceCreResDTO create(PlaceCreReqDTO placeCreReqDTO);

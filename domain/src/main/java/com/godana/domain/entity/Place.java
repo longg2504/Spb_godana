@@ -128,7 +128,7 @@ public class Place extends BaseEntity{
                 ;
     }
 
-    public PlaceDTO toPlaceDTO(List<PlaceAvatar> placeAvatarList){
+    public PlaceDTO toPlaceDTO(List<PlaceAvatar> placeAvatarList, Double rating, Long numberRating){
         return new PlaceDTO()
                 .setId(id)
                 .setPlaceTitle(title)
@@ -139,6 +139,8 @@ public class Place extends BaseEntity{
                 .setLocationRegion(locationRegion.toLocationRegionDTO())
                 .setContact(contact.toContactDTO())
                 .setPlaceAvatar(toAvatarDTOList(placeAvatarList))
+                .setRating(rating)
+                .setNumberRating(numberRating)
                 ;
     }
 

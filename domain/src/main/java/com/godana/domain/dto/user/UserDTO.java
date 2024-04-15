@@ -2,6 +2,7 @@ package com.godana.domain.dto.user;
 
 import com.godana.domain.dto.role.RoleDTO;
 import com.godana.domain.entity.User;
+import com.godana.domain.entity.UserAvatar;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ public class UserDTO {
     private String username;
     private String password;
     private RoleDTO role;
+    private UserAvatar avatar;
 
     public User toUser() {
         return new User()

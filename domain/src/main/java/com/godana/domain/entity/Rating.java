@@ -1,5 +1,6 @@
 package com.godana.domain.entity;
 
+import com.godana.domain.dto.rating.RatingCreResDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,5 +33,15 @@ public class Rating extends BaseEntity{
     private double rating;
 
     private String content;
+
+
+    public RatingCreResDTO toRaingCreResDTO(){
+        return new RatingCreResDTO()
+                .setContent(content)
+                .setRating(rating)
+                .setUserId(user.getId())
+                .setPlaceId(place.getId())
+                ;
+    }
 
 }

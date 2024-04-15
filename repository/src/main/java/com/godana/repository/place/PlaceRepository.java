@@ -27,9 +27,13 @@ public interface PlaceRepository extends JpaRepository<Place,Long> {
             "p.latitude, " +
             "p.category, " +
             "p.locationRegion, " +
-            "p.contact " +
+            "p.contact, " +
+            "avg(r.rating)," +
+            "count(r.id) " +
             ") " +
             "FROM Place AS p " +
+            "JOIN Rating AS r " +
+            "ON r.place.id = p.id " +
             "WHERE (:category IS NULL OR p.category = :category) " +
             "AND p.title LIKE %:search% " +
             "AND p.deleted = false " +
@@ -38,4 +42,6 @@ public interface PlaceRepository extends JpaRepository<Place,Long> {
     Page<PlaceDTO> findAllByCategoryAndSearch(@Param("category") Category category, @Param("search") String search, Pageable pageable);
 
     Optional<Place> findPlaceByIdAndDeletedFalse(Long id);
+
+    Optional<PlaceDTO> findPlaceById(Long id);
 }

@@ -62,6 +62,10 @@ public class PlaceServiceImpl implements IPlaceService {
     }
 
 
+    @Override
+    public Optional<PlaceDTO> findPlaceById(Long id) {
+        return placeRepository.findPlaceById(id);
+    }
 
     @Override
     public Page<PlaceDTO> findAllByCategoryAndSearch(Category category, String search,Pageable pageable) {

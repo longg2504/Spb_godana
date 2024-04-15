@@ -72,7 +72,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User create(UserRegisterReqDTO userRegisterReqDTO) {
         User user = new User();
-        Optional<Role> roleOptional = roleRepository.findById(1L);
+        Optional<Role> roleOptional = roleRepository.findById(2L);
         if(userRegisterReqDTO.getUserAvatar() == null){
             user = userRepository.save(userRegisterReqDTO.toUser(roleOptional.get(), EUserStatus.OFFLINE));
         }

@@ -29,8 +29,10 @@ public class PlaceDTO {
     private CategoryDTO category;
     private LocationRegionDTO locationRegion;
     private ContactDTO contact;
+    private Double rating;
+    private Long numberRating;
 
-    public PlaceDTO(Long id, String placeTitle, String content, String longitude, String latitude, List<PlaceAvatar> placeAvatar, Category category, LocationRegion locationRegion, Contact contact) {
+    public PlaceDTO(Long id, String placeTitle, String content, String longitude, String latitude, List<PlaceAvatar> placeAvatar, Category category, LocationRegion locationRegion, Contact contact, Double rating) {
         this.id = id;
         this.placeTitle = placeTitle;
         this.content = content;
@@ -40,9 +42,10 @@ public class PlaceDTO {
         this.category = category.toCategoryDTO();
         this.locationRegion = locationRegion.toLocationRegionDTO();
         this.contact = contact.toContactDTO();
+        this.rating = rating;
 
     }
-    public PlaceDTO(Long id, String placeTitle, String content, String longitude, String latitude, Category category, LocationRegion locationRegion, Contact contact) {
+    public PlaceDTO(Long id, String placeTitle, String content, String longitude, String latitude, Category category, LocationRegion locationRegion, Contact contact, Double rating, Long numberRating) {
         this.id = id;
         this.placeTitle = placeTitle;
         this.content = content;
@@ -51,6 +54,8 @@ public class PlaceDTO {
         this.category = category.toCategoryDTO();
         this.locationRegion = locationRegion.toLocationRegionDTO();
         this.contact = contact.toContactDTO();
+        this.rating = rating;
+        this.numberRating = numberRating;
     }
 
     public List<PlaceAvatarDTO> toAvatarDTOList(List<PlaceAvatar> placeAvatars){
