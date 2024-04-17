@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class RatingStats {
     private double averageRating;
-    private Long numberOfRatings;
+    private Integer numberOfRatings;
 
 
 }

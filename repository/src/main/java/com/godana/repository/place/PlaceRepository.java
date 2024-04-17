@@ -28,11 +28,11 @@ public interface PlaceRepository extends JpaRepository<Place,Long> {
             "p.category, " +
             "p.locationRegion, " +
             "p.contact, " +
-            "avg(r.rating)," +
-            "count(r.id) " +
+            "avg(r.rating), " +
+            "CASE WHEN COUNT(r.id) IS NULL THEN 0 ELSE COUNT(r.id) END" +
             ") " +
             "FROM Place AS p " +
-            "JOIN Rating AS r " +
+            "LEFT JOIN Rating AS r " +
             "ON r.place.id = p.id " +
             "WHERE (:category IS NULL OR p.category = :category) " +
             "AND p.title LIKE %:search% " +

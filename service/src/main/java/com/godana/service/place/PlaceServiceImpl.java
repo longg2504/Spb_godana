@@ -150,6 +150,8 @@ public class PlaceServiceImpl implements IPlaceService {
                 PlaceAvatar placeAvatar = new PlaceAvatar();
 
                 placeAvatar.setPlace(place);
+                placeAvatar.setWidth(600);
+                placeAvatar.setHeight(600);
                 placeAvatar = placeAvatarRepository.save(placeAvatar);
 
                 uploadAndSavePlaceImage(image, placeAvatar);
@@ -205,10 +207,17 @@ public class PlaceServiceImpl implements IPlaceService {
             placeUpResDTO = place.toPlaceUpResDTO();
 
         } else {
+            // Xóa tất cả các placeAvatar liên quan đến placeId
+            List<PlaceAvatar> existingPlaceAvatars = placeAvatarRepository.findAllByPlace(place);
+            placeAvatarRepository.deleteAll(existingPlaceAvatars);
+
+            // Thêm placeAvatar mới vào
             List<PlaceAvatar> placeAvatars = new ArrayList<>();
             for (MultipartFile image : placeUpReqDTO.getPlaceAvatar()) {
                 PlaceAvatar placeAvatar = new PlaceAvatar();
                 placeAvatar.setPlace(place);
+                placeAvatar.setHeight(600);
+                placeAvatar.setWidth(600);
                 placeAvatar = placeAvatarRepository.save(placeAvatar);
                 uploadAndSavePlaceImage(image, placeAvatar);
 

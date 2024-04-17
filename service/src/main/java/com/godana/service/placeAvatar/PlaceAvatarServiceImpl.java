@@ -33,7 +33,7 @@ public class PlaceAvatarServiceImpl implements IPlaceAvatarService{
 
     @Override
     public void delete(PlaceAvatar placeAvatar) {
-
+        placeAvatarRepository.delete(placeAvatar);
     }
 
     @Override

@@ -56,13 +56,13 @@ public class PlaceAPI {
         }
         Place place = placeOptional.get();
         Double rating = calculateAverage(place.getRatingList()).getAverageRating();
-        Long numberRating = calculateAverage(place.getRatingList()).getNumberOfRatings();
+        Integer numberRating = calculateAverage(place.getRatingList()).getNumberOfRatings() ;
         PlaceDTO placeDTO = place.toPlaceDTO(place.getPlaceAvatarList(),rating,numberRating);
         return new ResponseEntity<>(placeDTO, HttpStatus.OK);
     }
     private RatingStats calculateAverage(List<Rating> ratings) {
         if (ratings == null || ratings.isEmpty()) {
-            return new RatingStats(0.0, 0L);
+            return new RatingStats(0.0, 0);
         }
 
         Double sum = 0.0;
@@ -70,7 +70,7 @@ public class PlaceAPI {
             sum += rating.getRating();
         }
         double averageRating = sum / ratings.size();
-        return new RatingStats(averageRating, (long) ratings.size());
+        return new RatingStats(averageRating, (Integer) ratings.size());
     }
 
     @PostMapping

@@ -11,4 +11,6 @@ import java.util.List;
 @Repository
 public interface PlaceAvatarRepository extends JpaRepository<PlaceAvatar, String> {
     List<PlaceAvatar> findAllByPlace(Place place);
+
+
 }

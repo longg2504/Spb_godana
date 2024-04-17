@@ -24,7 +24,7 @@ public class Contact extends BaseEntity {
     private Long id;
 
     private String email;
-    @Column(length = 10)
+    @Column(length = 11)
     private String phone;
 
     private String website;
