@@ -1,6 +1,7 @@
 package com.godana.service.user;
 
 import com.godana.domain.dto.user.UserRegisterReqDTO;
+import com.godana.domain.dto.user.UserResDTO;
 import com.godana.domain.entity.*;
 import com.godana.domain.enums.ERole;
 import com.godana.domain.enums.EUserStatus;
@@ -11,6 +12,8 @@ import com.godana.repository.userAvatar.UserAvatarRepository;
 import com.godana.service.upload.IUploadService;
 import com.godana.utils.UploadUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -84,6 +87,22 @@ public class UserServiceImpl implements IUserService {
         return user;
     }
 
+    @Override
+    public Page<UserResDTO> findUserBySearch(String search, Pageable pageable) {
+        return userRepository.findUserBySearch(search, pageable);
+    }
+
+    @Override
+    public Page<UserResDTO> findUserBanBySearch(String search, Pageable pageable) {
+        return userRepository.findUserBanBySearch(search, pageable);
+    }
+
+    @Override
+    public void unban(User user) {
+        user.setDeleted(false);
+        userRepository.save(user);
+    }
+
     public void uploadAndSaveUserImage(MultipartFile image, UserAvatar userAvatar) {
 
         try {
@@ -126,7 +145,8 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public void delete(User user) {
-        userRepository.delete(user);
+        user.setDeleted(true);
+        userRepository.save(user);
     }
 
     @Override

@@ -2,8 +2,12 @@ package com.godana.service.user;
 
 
 import com.godana.domain.dto.user.UserRegisterReqDTO;
+import com.godana.domain.dto.user.UserResDTO;
 import com.godana.domain.entity.User;
 import com.godana.service.IGeneralService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.Optional;
@@ -18,6 +22,10 @@ public interface IUserService extends IGeneralService<User, Long>, UserDetailsSe
 
     User create(UserRegisterReqDTO userRegisterReqDTO);
 
+    Page<UserResDTO> findUserBySearch(@Param("search") String search, Pageable pageable);
+
+    Page<UserResDTO> findUserBanBySearch(@Param("search") String search, Pageable pageable);
 
 
+    void unban(User user);
 }
