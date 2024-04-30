@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/upload")
+@RequestMapping("/api/upload")
 public class UploadAPI {
     @Autowired
     private IUploadService iUploadService;

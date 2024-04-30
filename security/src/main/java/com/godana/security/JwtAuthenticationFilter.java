@@ -57,18 +57,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        try {
-            String bearerToken = getBearerTokenRequest(request);
-            String authorizationCookie = getCookieValue(request);
-
-            setAuthentication(request, bearerToken);
-            setAuthentication(request, authorizationCookie);
-
-        } catch (Exception e) {
-            logger.error("Can NOT set user authentication -> Message: {0}", e);
+        System.out.println("request.getServletPath() ==================");
+        System.out.println(request.getServletPath());
+        if (request.getServletPath().equals("/api/auth/login")) {
+            filterChain.doFilter(request, response);
         }
+        else {
+            try {
+                String bearerToken = getBearerTokenRequest(request);
+                String authorizationCookie = getCookieValue(request);
 
-        filterChain.doFilter(request, response);
+                setAuthentication(request, bearerToken);
+                setAuthentication(request, authorizationCookie);
+
+            } catch (Exception e) {
+                logger.error("Can NOT set user authentication -> Message: {0}", e);
+            }
+            filterChain.doFilter(request, response);
+        }
     }
 
     private void setAuthentication(HttpServletRequest request, String authorizationValue) {

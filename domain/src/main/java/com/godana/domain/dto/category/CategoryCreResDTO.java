@@ -16,4 +16,5 @@ public class CategoryCreResDTO {
     private Long id;
     private String titlte;
     private Long titleNumericalOrder;
+    private String svg;
 }

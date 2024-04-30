@@ -1,9 +1,6 @@
 package com.godana.api;
 
-import com.godana.domain.dto.post.PostCreReqDTO;
-import com.godana.domain.dto.post.PostCreResDTO;
-import com.godana.domain.dto.post.PostUpReqDTO;
-import com.godana.domain.dto.post.PostUpResDTO;
+import com.godana.domain.dto.post.*;
 import com.godana.domain.entity.Post;
 import com.godana.domain.entity.User;
 import com.godana.exception.DataInputException;
@@ -16,10 +13,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/post")
+@RequestMapping("/api/post")
 public class PostAPI {
     @Autowired
     private IPostService iPostService;
@@ -30,6 +29,17 @@ public class PostAPI {
     @Autowired
     private ValidateUtils validateUtils;
 
+    @GetMapping
+    public ResponseEntity<?> findAllPost(){
+        List<Post> postList = iPostService.findAll();
+        List<PostDTO> postDTOList = new ArrayList<>();
+        for(Post post : postList){
+            PostDTO postDTO = post.toPostDTO();
+
+            postDTOList.add(postDTO);
+        }
+        return new ResponseEntity<>(postDTOList,HttpStatus.OK);
+    }
 
     @PostMapping
     public ResponseEntity<?> createPost(@ModelAttribute PostCreReqDTO postCreReqDTO){

@@ -14,15 +14,31 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Accessors(chain = true)
 public class UserRegisterReqDTO implements Validator {
+    @NotBlank(message = "Vui lòng nhập tài khoản!")
+    @Size(min = 8, max = 35, message = "Độ dài email nằm trong khoảng 8-35 ký tự!")
     private String username;
+
+    @Pattern(regexp = "^[\\w]+@([\\w-]+\\.)+[\\w-]{2,6}$", message = "Email không hợp lệ!")
+    @NotBlank(message = "Vui lòng nhập email!")
+    private String email;
+
+    @Size(min = 3, max = 50, message = "Độ dài mật khẩu nằm trong khoảng 3-50 ký tự!")
+    @NotBlank(message = "Vui lòng nhập mật khẩu!")
     private String password;
+
+    @NotBlank(message = "Vui lòng nhập Họ tên!")
     private String fullName;
+
     private MultipartFile userAvatar;
 
 
@@ -30,7 +46,7 @@ public class UserRegisterReqDTO implements Validator {
         return new User()
                 .setUsername(username)
                 .setPassword(password)
-                .setEmail(username)
+                .setEmail(email)
                 .setRole(role)
                 .setUserAvatar(userAvatar)
                 .setStatus(status)
@@ -41,7 +57,7 @@ public class UserRegisterReqDTO implements Validator {
         return new User()
                 .setUsername(username)
                 .setPassword(password)
-                .setEmail(username)
+                .setEmail(email)
                 .setFullName(fullName)
                 .setRole(role)
                 .setStatus(status)

@@ -19,6 +19,7 @@ import com.godana.utils.ValidateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -68,8 +69,8 @@ public class PlaceServiceImpl implements IPlaceService {
     }
 
     @Override
-    public Page<PlaceDTO> findAllByCategoryAndSearch(Category category, String search,Pageable pageable) {
-        Page<PlaceDTO> placeDTOS = placeRepository.findAllByCategoryAndSearch(category, search,pageable);
+    public Page<PlaceDTO> findAllByCategoryAndSearch(Category category, String search, String districtName, String wardName,String address,Double rating, Pageable pageable) {
+        Page<PlaceDTO> placeDTOS = placeRepository.findAllByCategoryAndSearch(category, search, districtName, wardName, address, rating, pageable);
         List<PlaceAvatarDTO> placeAvatarDTOS = new ArrayList<>();
         for(PlaceDTO placeDTO : placeDTOS){
             Long placeId = placeDTO.getId();
@@ -200,6 +201,7 @@ public class PlaceServiceImpl implements IPlaceService {
 
         Place place = placeUpReqDTO.toPlace(placeId, category, locationRegion, user, contact);
         place.setStatus(optionalPlace.get().getStatus());
+        place = placeRepository.save(place);
         PlaceUpResDTO placeUpResDTO = new PlaceUpResDTO();
         if (placeUpReqDTO.getPlaceAvatar() == null) {
             place.setPlaceAvatarList(optionalPlace.get().getPlaceAvatarList());

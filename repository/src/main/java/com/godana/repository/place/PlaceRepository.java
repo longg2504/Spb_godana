@@ -36,10 +36,14 @@ public interface PlaceRepository extends JpaRepository<Place,Long> {
             "ON r.place.id = p.id " +
             "WHERE (:category IS NULL OR p.category = :category) " +
             "AND p.title LIKE %:search% " +
+            "AND p.locationRegion.districtName LIKE %:districtName% " +
+            "AND p.locationRegion.wardName LIKE %:wardName% " +
+            "AND p.locationRegion.address LIKE %:address% " +
+            "AND :rating IS NULL OR r.rating = :rating " +
             "AND p.deleted = false " +
             "GROUP BY p.id "
     )
-    Page<PlaceDTO> findAllByCategoryAndSearch(@Param("category") Category category, @Param("search") String search, Pageable pageable);
+    Page<PlaceDTO> findAllByCategoryAndSearch(@Param("category") Category category, @Param("search") String search, @Param("districtName") String districtName, @Param("wardName") String wardName, @Param("address") String address, @Param("rating") Double rating , Pageable pageable);
 
     Optional<Place> findPlaceByIdAndDeletedFalse(Long id);
 

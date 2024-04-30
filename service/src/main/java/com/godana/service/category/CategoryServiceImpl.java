@@ -69,6 +69,7 @@ public class CategoryServiceImpl implements ICategoryService{
         CategoryCreResDTO categoryCreResDTO = category.toCategoryCreResDTO();
         categoryCreResDTO.setId(category.getId());
         categoryCreResDTO.setTitleNumericalOrder(category.getTitlenumericalOrder());
+        categoryCreResDTO.setSvg(category.getSvg());
         return categoryCreResDTO;
     }
 }

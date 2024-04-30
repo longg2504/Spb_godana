@@ -1,6 +1,7 @@
 package com.godana.domain.dto.user;
 
 import com.godana.domain.dto.role.RoleDTO;
+import com.godana.domain.dto.userAvatar.UserAvatarDTO;
 import com.godana.domain.entity.Role;
 import com.godana.domain.entity.UserAvatar;
 import com.godana.domain.enums.EUserStatus;
@@ -31,6 +32,6 @@ public class UserResDTO {
         this.fullName = fullName;
         this.role = role.toRoleDTO();
         this.status = String.valueOf(status);
-        this.avatar = avatar;
+        this.avatar= avatar;
     }
 }

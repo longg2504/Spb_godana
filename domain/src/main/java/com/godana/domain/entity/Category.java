@@ -29,6 +29,8 @@ public class Category extends BaseEntity {
     @Column(name = "titlenumerical_order")
     private Long  titlenumericalOrder;
 
+    private String svg;
+
     @OneToMany(mappedBy = "category")
     private List<Place> places;
 
@@ -39,13 +41,16 @@ public class Category extends BaseEntity {
         return new CategoryDTO()
                 .setId(id)
                 .setTitle(title)
-                .setTitlenumericalOrder(titlenumericalOrder);
+                .setTitlenumericalOrder(titlenumericalOrder)
+                .setSvg(svg)
+                ;
     }
 
     public CategoryCreResDTO toCategoryCreResDTO(){
         return new CategoryCreResDTO()
                 .setId(id)
                 .setTitlte(title)
-                .setTitleNumericalOrder(titlenumericalOrder);
+                .setTitleNumericalOrder(titlenumericalOrder)
+                .setSvg(svg);
     }
 }

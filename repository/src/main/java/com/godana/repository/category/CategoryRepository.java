@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-    @Query("SELECT NEW com.godana.domain.dto.category.CategoryDTO(ca.id,ca.title,ca.titlenumericalOrder) from Category as ca WHERE ca.deleted=false ")
+    @Query("SELECT NEW com.godana.domain.dto.category.CategoryDTO(ca.id,ca.title,ca.titlenumericalOrder,ca.svg) from Category as ca WHERE ca.deleted=false ")
     List<CategoryDTO> findAllCategoryDTO();
 
     Optional<Category> findByIdAndDeletedFalse(Long id);

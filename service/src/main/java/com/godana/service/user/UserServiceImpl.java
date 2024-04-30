@@ -63,6 +63,11 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public Boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    @Override
     public User getByUsername(String username) {
         return userRepository.getByUsername(username);
     }
@@ -74,17 +79,23 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User create(UserRegisterReqDTO userRegisterReqDTO) {
-        User user = new User();
         Optional<Role> roleOptional = roleRepository.findById(2L);
-        if(userRegisterReqDTO.getUserAvatar() == null){
-            user = userRepository.save(userRegisterReqDTO.toUser(roleOptional.get(), EUserStatus.OFFLINE));
+        if (userRegisterReqDTO.getUserAvatar() == null){
+            User user = userRegisterReqDTO.toUser(roleOptional.get() ,EUserStatus.OFFLINE);
+            user.setPassword(passwordEncoder.encode(userRegisterReqDTO.getPassword()));
+            return userRepository.save(user);
         }
-        MultipartFile file = userRegisterReqDTO.getUserAvatar();
-        UserAvatar userAvatar = new UserAvatar();
-        userAvatar = userAvatarRepository.save(userAvatar);
-        uploadAndSaveUserImage(file, userAvatar);
-        user = iUserService.save(userRegisterReqDTO.toUser(roleOptional.get(),userAvatar, EUserStatus.OFFLINE));
-        return user;
+        else {
+            MultipartFile file = userRegisterReqDTO.getUserAvatar();
+            UserAvatar userAvatar = new UserAvatar();
+            userAvatar.setHeight(600);
+            userAvatar.setWidth(600);
+            userAvatar = userAvatarRepository.save(userAvatar);
+            uploadAndSaveUserImage(file, userAvatar);
+            User user = userRegisterReqDTO.toUser(roleOptional.get(), userAvatar, EUserStatus.OFFLINE);
+            user.setPassword(passwordEncoder.encode(userRegisterReqDTO.getPassword()));
+            return userRepository.save(user);
+        }
     }
 
     @Override
@@ -139,7 +150,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User save(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 

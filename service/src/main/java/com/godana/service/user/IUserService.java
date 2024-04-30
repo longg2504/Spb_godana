@@ -15,6 +15,7 @@ import java.util.Optional;
 public interface IUserService extends IGeneralService<User, Long>, UserDetailsService {
 
     Boolean existsByUsername(String username);
+    Boolean existsByEmail(String email);
 
     User getByUsername(String username);
 

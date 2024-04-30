@@ -16,17 +16,20 @@ public class CategoryDTO {
     private Long id;
     private String title;
     private Long titlenumericalOrder;
+    private String svg;
 
-    public CategoryDTO(Long id, String title, Long titlenumericalOrder) {
+    public CategoryDTO(Long id, String title, Long titlenumericalOrder, String svg) {
         this.id = id;
         this.title = title;
         this.titlenumericalOrder = titlenumericalOrder;
+        this.svg = svg;
     }
 
     public Category toCategory() {
         return new Category()
                 .setId(id)
                 .setTitle(title)
-                .setTitlenumericalOrder(titlenumericalOrder);
+                .setTitlenumericalOrder(titlenumericalOrder)
+                .setSvg(svg);
     }
 }

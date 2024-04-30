@@ -19,6 +19,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Boolean existsByUsername(String username);
 
+    Boolean existsByEmail(String email);
+
     Optional<User> findByUsername(String username);
 
     User getByUsername(String username);
@@ -30,9 +32,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "u.fullName, " +
             "u.role, " +
             "u.status, " +
-            "u.userAvatar " +
+            "ua " +
             ") " +
             "FROM User AS u " +
+            "LEFT JOIN UserAvatar AS ua " +
+            "ON ua.id = u.userAvatar.id " +
             "WHERE (:search IS NULL OR u.fullName LIKE %:search% " +
             "OR u.email LIKE %:search% " +
             "OR u.username LIKE %:search%) " +
@@ -49,9 +53,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "u.fullName, " +
             "u.role, " +
             "u.status, " +
-            "u.userAvatar " +
+            "ua " +
             ") " +
             "FROM User AS u " +
+            "LEFT JOIN UserAvatar AS ua " +
+            "ON ua.id = u.userAvatar.id " +
             "WHERE (:search IS NULL OR u.fullName LIKE %:search% " +
             "OR u.email LIKE %:search% " +
             "OR u.username LIKE %:search%) " +

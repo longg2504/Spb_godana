@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public AuthenticationEntryPoint restServicesEntryPoint() {
+    public RestAuthenticationEntryPoint restServicesEntryPoint() {
         return new RestAuthenticationEntryPoint();
     }
 
@@ -60,7 +60,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().ignoringAntMatchers("/**").disable();
+//        http.csrf().ignoringAntMatchers("/**").disable();
+        http.csrf().ignoringAntMatchers("/**");
         http.httpBasic().authenticationEntryPoint(restServicesEntryPoint());
 
         http.authorizeRequests()
@@ -68,8 +69,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/",
                         "/api/auth/login",
                         "/api/auth/register",
-                        "/login","/login/**",
-                        "/logout","/logout/**",
+                        "/login",
+                        "/login/**",
+                        "/logout",
+                        "/logout/**",
                         "/api/test",
                         "/api/**",
                         "/ws/**",

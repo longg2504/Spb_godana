@@ -88,6 +88,8 @@ public class PostServiceImpl implements IPostService{
                 PostAvatar postAvatar = new PostAvatar();
 
                 postAvatar.setPost(post);
+                postAvatar.setWidth(600);
+                postAvatar.setHeight(600);
                 postAvatar = postAvatarRepository.save(postAvatar);
 
                 uploadAndSavePostImage(image, postAvatar);

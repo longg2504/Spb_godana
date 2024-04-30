@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 @Accessors(chain = true)
 public class PostCreReqDTO {
-    private String PostTitle;
+    private String postTitle;
     private String content;
     private Long userId;
     private Long categoryId;

@@ -35,8 +35,11 @@ public class PlaceAPI {
 
 
     @GetMapping
-    public ResponseEntity<?> getAllPlace(@RequestParam (defaultValue = "") Category category, @RequestParam (defaultValue = "") String search,Pageable pageable){
-        Page<PlaceDTO> placeDTOS = iPlaceService.findAllByCategoryAndSearch(category, search, pageable);
+    public ResponseEntity<?> getAllPlace(@RequestParam (defaultValue = "") Category category,
+                                         @RequestParam (defaultValue = "") String search, @RequestParam (defaultValue = "") String districtName,
+                                         @RequestParam (defaultValue = "") String wardName, @RequestParam (defaultValue = "") String address,
+                                         @RequestParam (defaultValue = "") Double rating,Pageable pageable){
+        Page<PlaceDTO> placeDTOS = iPlaceService.findAllByCategoryAndSearch(category, search, districtName, wardName, address, rating, pageable);
         if(placeDTOS.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

@@ -40,7 +40,7 @@ public class UserAPI {
         return new ResponseEntity<>(userResDTOPage, HttpStatus.OK);
     }
 
-    @DeleteMapping("/ban-user/{userId}")
+    @PostMapping("/ban-user/{userId}")
     public ResponseEntity<?> banUser (@PathVariable("userId") String userIdStr){
         if(!validateUtils.isNumberValid(userIdStr)){
             throw new DataInputException("UserId không hợp lệ");

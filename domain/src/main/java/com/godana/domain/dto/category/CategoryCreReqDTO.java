@@ -14,12 +14,14 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class CategoryCreReqDTO {
     private String title;
+    private String svg;
 
     public Category toCategory(){
         return new Category()
                 .setId(null)
                 .setTitle(title)
-                .setTitlenumericalOrder(null);
+                .setTitlenumericalOrder(null)
+                .setSvg(svg);
 
     }
 }

@@ -83,6 +83,13 @@ public class AuthAPI {
         if (exitsByUsername) {
             throw new EmailExistsException("Tài khoản này đã tồn tại vui lòng xem lại!!!");
         }
+
+        Boolean existsByEmail = userService.existsByEmail(userDTO.getEmail());
+
+        if (existsByEmail) {
+            throw new EmailExistsException("Email này đã tồn tại vui lòng xem lại!!!");
+        }
+
         try {
             userService.create(userDTO);
             return new ResponseEntity<>(HttpStatus.CREATED);
@@ -98,14 +105,19 @@ public class AuthAPI {
         }
         String username = userLoginReqDTO.getUsername();
         String password = userLoginReqDTO.getPassword();
+
+        User user = userService.findByName(username).orElseThrow(() -> {
+            throw new DataInputException("username không đúng vui lòng xem lại");
+        });
+
         Authentication authentication;
         try {
-            authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(username, password));
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
+            authentication = authenticationManager.authenticate(authenticationToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new DataInputException("Dữ liệu không đúng! Vui lòng kiểm tra lại!");
+            throw new DataInputException("password không đúng vui lòng nhập lại");
         }
         String jwt = jwtService.generateTokenLogin(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -126,7 +138,7 @@ public class AuthAPI {
                     jwt,
                     currentUser.getId(),
                     userDetails.getUsername(),
-                    currentUser.getUsername(),
+                    currentUser.getFullName(),
                     userDetails.getAuthorities()
             );
         } else {
@@ -136,7 +148,8 @@ public class AuthAPI {
                     jwt,
                     currentUser.getId(),
                     userDetails.getUsername(),
-                    currentUser.getUsername(),
+                    currentUser.getFullName(),
+                    userOptional.get().getEmail(),
                     userOptional.get().getUserAvatar(),
                     userDetails.getAuthorities()
             );

@@ -1,5 +1,6 @@
 package com.godana.domain.entity;
 
+import com.godana.domain.dto.post.PostDTO;
 import com.godana.domain.dto.postAvatar.PostAvatarResDTO;
 import com.godana.domain.dto.post.PostCreResDTO;
 import com.godana.domain.dto.post.PostUpResDTO;
@@ -77,6 +78,16 @@ public class Post extends BaseEntity{
                 .setContent(content)
                 .setUser(user.toUserDTO())
                 .setCategory(category.toCategoryDTO());
+    }
+
+    public PostDTO toPostDTO() {
+        return new PostDTO()
+                .setId(id)
+                .setTitle(postTitle)
+                .setContent(content)
+                .setCategory(category.toCategoryDTO())
+                .setUser(user.toUserDTO())
+                ;
     }
 
 

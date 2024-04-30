@@ -22,7 +22,6 @@ public class UserLoginReqDTO implements Validator {
 
 
     @NotBlank(message = "Vui lòng nhập tài khoản!")
-    @Pattern(regexp = "^[\\w]+@([\\w-]+\\.)+[\\w-]{2,6}$", message = "Email không hợp lệ!")
     @Size(min = 8, max = 35, message = "Độ dài email nằm trong khoảng 8-35 ký tự!")
     private String username;
 
