@@ -2,6 +2,7 @@ package com.godana.service.user;
 
 
 import com.godana.domain.dto.user.UserRegisterReqDTO;
+import com.godana.domain.dto.user.UserReqUpDTO;
 import com.godana.domain.dto.user.UserResDTO;
 import com.godana.domain.entity.User;
 import com.godana.service.IGeneralService;
@@ -23,9 +24,12 @@ public interface IUserService extends IGeneralService<User, Long>, UserDetailsSe
 
     User create(UserRegisterReqDTO userRegisterReqDTO);
 
+    User update(Long userId ,UserReqUpDTO userReqUpDTO);
+
     Page<UserResDTO> findUserBySearch(@Param("search") String search, Pageable pageable);
 
     Page<UserResDTO> findUserBanBySearch(@Param("search") String search, Pageable pageable);
+
 
 
     void unban(User user);

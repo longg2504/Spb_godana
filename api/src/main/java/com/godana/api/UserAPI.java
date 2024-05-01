@@ -1,10 +1,15 @@
 package com.godana.api;
 
 import com.godana.domain.dto.user.ChangePasswordReqDTO;
+import com.godana.domain.dto.user.UserReqUpDTO;
 import com.godana.domain.dto.user.UserResDTO;
 import com.godana.domain.entity.User;
+import com.godana.domain.entity.UserAvatar;
 import com.godana.exception.DataInputException;
+import com.godana.exception.EmailExistsException;
 import com.godana.service.user.IUserService;
+import com.godana.service.userAvatar.IUserAvatarService;
+import com.godana.utils.AppUtils;
 import com.godana.utils.ValidateUtils;
 import org.aspectj.bridge.Message;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +18,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -25,7 +32,11 @@ public class UserAPI {
     @Autowired
     private IUserService iUserService;
     @Autowired
+    private IUserAvatarService iUserAvatarService;
+    @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private AppUtils appUtils;
 
     @GetMapping
     public ResponseEntity<?> getAllUser(@RequestParam(defaultValue = "") String search, Pageable pageable){
@@ -105,6 +116,25 @@ public class UserAPI {
             return new ResponseEntity<>("Mật khẩu cũ không đúng vui lòng xem lại", HttpStatus.BAD_REQUEST);
         }
 
+
+    }
+
+    @PostMapping("/update-user/{userId}")
+    public ResponseEntity<?> updateUser(@Valid @PathVariable("userId") String userIdStr,@ModelAttribute UserReqUpDTO userReqUpDTO, BindingResult bindingResult){
+        if (bindingResult.hasFieldErrors()) {
+            return appUtils.mapErrorToResponse(bindingResult);
+        }
+
+        if(!validateUtils.isNumberValid(userIdStr)){
+            throw new DataInputException("Id user không đúng");
+        }
+
+        Long userId = Long.parseLong(userIdStr);
+        User user = iUserService.update(userId, userReqUpDTO);
+
+        UserResDTO userDTO = user.toUserResDTO();
+
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
 
     }
 }

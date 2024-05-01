@@ -1,6 +1,7 @@
 package com.godana.domain.entity;
 
 import com.godana.domain.dto.user.UserDTO;
+import com.godana.domain.dto.user.UserResDTO;
 import com.godana.domain.enums.EUserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -64,6 +65,18 @@ public class  User extends BaseEntity {
                 .setUsername(username)
                 .setRole(role.toRoleDTO())
                 .setAvatar(userAvatar)
+                ;
+    }
+
+    public UserResDTO toUserResDTO(){
+        return new UserResDTO()
+                .setId(id)
+                .setEmail(email)
+                .setFullName(fullName)
+                .setRole(role.toRoleDTO())
+                .setAvatar(userAvatar)
+                .setUsername(username)
+                .setStatus(String.valueOf(status))
                 ;
     }
     @Override

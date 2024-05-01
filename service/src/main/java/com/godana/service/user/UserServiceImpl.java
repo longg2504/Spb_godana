@@ -1,6 +1,7 @@
 package com.godana.service.user;
 
 import com.godana.domain.dto.user.UserRegisterReqDTO;
+import com.godana.domain.dto.user.UserReqUpDTO;
 import com.godana.domain.dto.user.UserResDTO;
 import com.godana.domain.entity.*;
 import com.godana.domain.enums.ERole;
@@ -95,6 +96,56 @@ public class UserServiceImpl implements IUserService {
             User user = userRegisterReqDTO.toUser(roleOptional.get(), userAvatar, EUserStatus.OFFLINE);
             user.setPassword(passwordEncoder.encode(userRegisterReqDTO.getPassword()));
             return userRepository.save(user);
+        }
+    }
+
+    @Override
+    public User update(Long userId, UserReqUpDTO userReqUpDTO) {
+        Optional<User> userOptional = iUserService.findById(userId);
+        if(!userOptional.isPresent()) {
+            throw new DataInputException("User này không tồn tại");
+        }
+
+        User user = userOptional.get();
+
+        if(userReqUpDTO.getAvatar() == null){
+            user.setEmail(userReqUpDTO.getEmail());
+            user.setFullName(userReqUpDTO.getFullname());
+
+            return user = save(user);
+        }
+        else {
+
+            if(user.getUserAvatar() == null) {
+                MultipartFile file = userReqUpDTO.getAvatar();
+                UserAvatar userAvatar = new UserAvatar();
+                userAvatar.setHeight(600);
+                userAvatar.setWidth(600);
+                userAvatar = userAvatarRepository.save(userAvatar);
+                uploadAndSaveUserImage(file, userAvatar);
+
+                user.setEmail(userReqUpDTO.getEmail());
+                user.setFullName(userReqUpDTO.getFullname());
+                user.setUserAvatar(userAvatar);
+                return user = save(user);
+            }
+            else {
+                Optional<UserAvatar> userAvatarOptional = userAvatarRepository.findById(user.getUserAvatar().getId());
+                userAvatarRepository.delete(userAvatarOptional.get());
+                MultipartFile file = userReqUpDTO.getAvatar();
+                UserAvatar userAvatar = new UserAvatar();
+                userAvatar.setHeight(600);
+                userAvatar.setWidth(600);
+                userAvatar = userAvatarRepository.save(userAvatar);
+                uploadAndSaveUserImage(file, userAvatar);
+
+                user.setEmail(userReqUpDTO.getEmail());
+                user.setFullName(userReqUpDTO.getFullname());
+                user.setUserAvatar(userAvatar);
+                return user = save(user);
+            }
+
+
         }
     }
 
