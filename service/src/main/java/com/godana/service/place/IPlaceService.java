@@ -20,4 +20,6 @@ public interface IPlaceService extends IGeneralService<Place, Long> {
 
     PlaceUpResDTO update(String placeIdStr, PlaceUpReqDTO placeUpReqDTO);
 
+    List<Place> findNearPlace(float longitude, float latitude, Long id);
+
 }

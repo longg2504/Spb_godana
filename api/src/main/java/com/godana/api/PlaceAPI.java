@@ -6,10 +6,12 @@ import com.godana.domain.entity.Category;
 import com.godana.domain.entity.Place;
 import com.godana.domain.entity.Rating;
 import com.godana.exception.DataInputException;
+import com.godana.repository.place.PlaceRepository;
 import com.godana.service.category.ICategoryService;
 import com.godana.service.place.IPlaceService;
 import com.godana.utils.AppUtils;
 import com.godana.utils.ValidateUtils;
+import javassist.expr.NewArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +35,8 @@ public class PlaceAPI {
     private ValidateUtils validateUtils;
     @Autowired
     private AppUtils appUtils;
+    @Autowired
+    private PlaceRepository placeRepository;
 
 
     @GetMapping
@@ -86,5 +91,41 @@ public class PlaceAPI {
     public ResponseEntity<?> updatePlace(@PathVariable("placeId") String placeIdStr, PlaceUpReqDTO placeUpReqDTO){
         PlaceUpResDTO placeUpResDTO = iPlaceService.update(placeIdStr,placeUpReqDTO);
         return new ResponseEntity<>(placeUpResDTO, HttpStatus.OK);
+    }
+
+    @PostMapping("/nearby_place/{placeId}")
+    public ResponseEntity<?> findNearbyPlace(@PathVariable("placeId") String placeIdStr) {
+        if(!validateUtils.isNumberValid(placeIdStr)) {
+            throw new DataInputException("ID của place không đúng định dạng");
+        }
+
+        Long placeId = Long.parseLong(placeIdStr);
+
+        Optional<Place> placeOptional = iPlaceService.findById(placeId);
+        if(!placeOptional.isPresent()){
+            throw new DataInputException("địa điểm  không tồn tại");
+
+        }
+
+        Place place = placeOptional.get();
+
+        Float longitude = Float.parseFloat(place.getLongitude());
+
+        Float latitude = Float.parseFloat(place.getLatitude());
+
+        List<Place> places = iPlaceService.findNearPlace(longitude,latitude,place.getId());
+        List<PlaceDTO> placeDTOS = new ArrayList<>();
+        for(Place item : places){
+            Double rating = calculateAverage(item.getRatingList()).getAverageRating();
+            Integer numberRating = calculateAverage(item.getRatingList()).getNumberOfRatings() ;
+            placeDTOS.add(item.toPlaceDTO(item.getPlaceAvatarList(),rating, numberRating));
+        }
+
+        if(placeDTOS.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(placeDTOS, HttpStatus.OK);
+
     }
 }

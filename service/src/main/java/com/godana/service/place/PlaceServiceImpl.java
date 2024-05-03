@@ -86,6 +86,11 @@ public class PlaceServiceImpl implements IPlaceService {
     }
 
     @Override
+    public List<Place> findNearPlace(float longitude, float latitude, Long id) {
+       return placeRepository.findNearPlace(longitude, latitude, id);
+    }
+
+    @Override
     public Optional<Place> findPlaceByIdAndDeletedFalse(Long id) {
         return placeRepository.findPlaceByIdAndDeletedFalse(id);
     }
@@ -229,6 +234,8 @@ public class PlaceServiceImpl implements IPlaceService {
         }
         return placeUpResDTO;
     }
+
+
 
     public void uploadAndSavePlaceImage(MultipartFile image, PlaceAvatar placeAvatar) {
 
