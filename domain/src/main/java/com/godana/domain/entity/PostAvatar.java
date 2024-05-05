@@ -46,7 +46,7 @@ public class PostAvatar extends BaseEntity {
     private Integer height;
 
     @ManyToOne
-    @JoinColumn(name="post_image_id" , referencedColumnName = "id" )
+    @JoinColumn(name="post_id" , referencedColumnName = "id" )
     private Post post;
 
 

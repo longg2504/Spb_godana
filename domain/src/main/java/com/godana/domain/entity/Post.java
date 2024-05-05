@@ -80,13 +80,16 @@ public class Post extends BaseEntity{
                 .setCategory(category.toCategoryDTO());
     }
 
-    public PostDTO toPostDTO() {
+    public PostDTO toPostDTO(int like, int comment) {
         return new PostDTO()
                 .setId(id)
                 .setTitle(postTitle)
                 .setContent(content)
                 .setCategory(category.toCategoryDTO())
                 .setUser(user.toUserDTO())
+                .setPostAvatar(toAvatarResDTOList(postImages))
+                .setLike(like)
+                .setComment(comment)
                 ;
     }
 

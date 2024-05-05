@@ -1,5 +1,6 @@
 package com.godana.service.postAvatar;
 
+import com.godana.domain.entity.Post;
 import com.godana.domain.entity.PostAvatar;
 import com.godana.repository.postAvatar.PostAvatarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,10 @@ public class PostAvartarServiceImpl implements IPostAvatarService {
     @Override
 
     public void deleteById(String id) {
+    }
+
+    @Override
+    public List<PostAvatar> findAllByPost(Post post) {
+        return postAvatarRepository.findAllByPost(post);
     }
 }

@@ -1,13 +1,9 @@
 package com.godana.service.post;
 
-import com.godana.domain.dto.post.PostCreReqDTO;
-import com.godana.domain.dto.post.PostCreResDTO;
-import com.godana.domain.dto.post.PostUpReqDTO;
-import com.godana.domain.dto.post.PostUpResDTO;
-import com.godana.domain.entity.PostAvatar;
-import com.godana.domain.entity.Category;
-import com.godana.domain.entity.Post;
-import com.godana.domain.entity.User;
+import com.godana.domain.dto.placeAvatar.PlaceAvatarDTO;
+import com.godana.domain.dto.post.*;
+import com.godana.domain.dto.postAvatar.PostAvatarResDTO;
+import com.godana.domain.entity.*;
 import com.godana.exception.DataInputException;
 import com.godana.repository.postAvatar.PostAvatarRepository;
 import com.godana.repository.category.CategoryRepository;
@@ -16,6 +12,8 @@ import com.godana.repository.user.UserRepository;
 import com.godana.service.upload.IUploadService;
 import com.godana.utils.UploadUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;
@@ -62,6 +60,22 @@ public class PostServiceImpl implements IPostService{
     @Override
     public void deleteById(Long id) {
         postRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<PostDTO> findAllByCategory(Category category, Pageable pageable) {
+        Page<PostDTO> postDTOS = postRepository.findAllByCategory(category, pageable);
+        List<PostAvatarResDTO> postAvatarResDTOS = new ArrayList<>();
+        for(PostDTO item : postDTOS){
+            Long postId = item.getId();
+            Optional<Post> postOptional = postRepository.findById(postId);
+            List<PostAvatar> postAvatars = postAvatarRepository.findAllByPost(postOptional.get());
+            postAvatarResDTOS = toAvatarDTOList(postAvatars);
+            item.setPostAvatar(postAvatarResDTOS);
+            item.setLike(item.getLike());
+            item.setComment(item.getComment());
+        }
+        return postDTOS;
     }
 
     @Override
@@ -166,5 +180,13 @@ public class PostServiceImpl implements IPostService{
             e.printStackTrace();
             throw new DataInputException("Upload hình ảnh thất bại");
         }
+    }
+
+    public List<PostAvatarResDTO> toAvatarDTOList(List<PostAvatar> postAvatars){
+        List<PostAvatarResDTO> dtoList = new ArrayList<>();
+        for (PostAvatar postAvatar : postAvatars) {
+            dtoList.add(postAvatar.toAvatarResDTO());
+        }
+        return dtoList;
     }
 }

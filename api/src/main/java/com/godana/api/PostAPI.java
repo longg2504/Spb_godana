@@ -1,6 +1,7 @@
 package com.godana.api;
 
 import com.godana.domain.dto.post.*;
+import com.godana.domain.entity.Category;
 import com.godana.domain.entity.Post;
 import com.godana.domain.entity.User;
 import com.godana.exception.DataInputException;
@@ -9,6 +10,8 @@ import com.godana.service.user.IUserService;
 import com.godana.utils.AppUtils;
 import com.godana.utils.ValidateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,15 +33,20 @@ public class PostAPI {
     private ValidateUtils validateUtils;
 
     @GetMapping
-    public ResponseEntity<?> findAllPost(){
-        List<Post> postList = iPostService.findAll();
-        List<PostDTO> postDTOList = new ArrayList<>();
-        for(Post post : postList){
-            PostDTO postDTO = post.toPostDTO();
-
-            postDTOList.add(postDTO);
+    public ResponseEntity<?> findAllPost(@RequestParam (defaultValue = "") Category category, Pageable pageable){
+//        List<Post> postList = iPostService.findAll();
+//        List<PostDTO> postDTOList = new ArrayList<>();
+//        for(Post post : postList){
+//            PostDTO postDTO = post.toPostDTO();
+//
+//            postDTOList.add(postDTO);
+//        }
+//        return new ResponseEntity<>(postDTOList,HttpStatus.OK);
+        Page<PostDTO> postDTOS = iPostService.findAllByCategory(category, pageable);
+        if(postDTOS.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(postDTOList,HttpStatus.OK);
+        return new ResponseEntity<>(postDTOS, HttpStatus.OK);
     }
 
     @PostMapping
