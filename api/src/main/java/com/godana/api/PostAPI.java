@@ -34,14 +34,6 @@ public class PostAPI {
 
     @GetMapping
     public ResponseEntity<?> findAllPost(@RequestParam (defaultValue = "") Category category, Pageable pageable){
-//        List<Post> postList = iPostService.findAll();
-//        List<PostDTO> postDTOList = new ArrayList<>();
-//        for(Post post : postList){
-//            PostDTO postDTO = post.toPostDTO();
-//
-//            postDTOList.add(postDTO);
-//        }
-//        return new ResponseEntity<>(postDTOList,HttpStatus.OK);
         Page<PostDTO> postDTOS = iPostService.findAllByCategory(category, pageable);
         if(postDTOS.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
