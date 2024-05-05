@@ -25,7 +25,7 @@ import javax.validation.constraints.Size;
 @Accessors(chain = true)
 public class UserRegisterReqDTO implements Validator {
     @NotBlank(message = "Vui lòng nhập tài khoản!")
-    @Size(min = 8, max = 35, message = "Độ dài email nằm trong khoảng 8-35 ký tự!")
+    @Size(min = 8, max = 35, message = "Độ dài username nằm trong khoảng 8-35 ký tự!")
     private String username;
 
     @Pattern(regexp = "^[\\w]+@([\\w-]+\\.)+[\\w-]{2,6}$", message = "Email không hợp lệ!")

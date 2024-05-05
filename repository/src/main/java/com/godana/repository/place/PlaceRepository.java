@@ -53,6 +53,6 @@ public interface PlaceRepository extends JpaRepository<Place,Long> {
             "LEFT JOIN ratings as r " +
             "ON r.place_id = p.id " +
             "WHERE ST_Distance_Sphere(ST_PointFromText(CONCAT('POINT(', p.longitude, ' ', p.latitude, ')')),ST_PointFromText(CONCAT('POINT(', :longitude, ' ', :latitude, ')')), 4326) <= 1 AND p.id <> :id " +
-            "GROUP BY p.id")
+            "GROUP BY p.id ")
     List<Place> findNearPlace(float longitude, float latitude, Long id);
 }
