@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -120,19 +121,80 @@ public class PostServiceImpl implements IPostService{
 
     @Override
     public PostUpResDTO updatePost(PostUpReqDTO postUpReqDTO, Long postId) {
+        Optional<Post> postOptional = postRepository.findById(postId);
+        if (!postOptional.isPresent()) {
+            throw new DataInputException("Mã bài viết muốn sữa không tồn tại vui lòng xem lại !!!");
+        }
         Optional<Post> optionalPost = postRepository.findById(postId);
         Post post = optionalPost.get();
-        if(optionalPost.isPresent()) {
+
+        if (optionalPost.isPresent()) {
             new DataInputException("Bài post muốn sửa không tồn tại vui lòng xem lại");
         }
-        Long userId = optionalPost.get().getUser().getId();
-        if(!userId.equals(postUpReqDTO.getUserId())){
-            new DataInputException("Bài post này không phải của bạn không thể sửa đổi");
-        }
+
+        Long categoryId = postUpReqDTO.getCategoryId();
+        Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
+        Category category = categoryOptional.get();
+
         post.setPostTitle(postUpReqDTO.getPostTitle());
         post.setContent(postUpReqDTO.getContent());
-        PostUpResDTO postUpResDTO = post.toPostUpResDTO(post.getPostImages());
-        return postUpResDTO;
+        post.setCategory(category);
+        postRepository.save(post);
+
+        List<String> newImageIds = postUpReqDTO.getListIdAvatarCurrrent();
+        List<PostAvatar> existingAvatars = postAvatarRepository.findAllByPost(post);
+        List<PostAvatar> avatarsToDelete = existingAvatars.stream()
+                .filter(avatar -> !newImageIds.contains(avatar.getId()))
+                .collect(Collectors.toList());
+        postAvatarRepository.deleteAll(avatarsToDelete);
+
+
+        if (postUpReqDTO.getImages() == null) {
+            List<PostAvatar> updatedAvatars = postAvatarRepository.findAllByPost(post);
+            return post.toPostUpResDTO(updatedAvatars);
+        }
+        else {
+            for (MultipartFile image : postUpReqDTO.getImages()) {
+                PostAvatar postAvatar = new PostAvatar();
+                postAvatar.setPost(post);
+                postAvatar.setHeight(600);
+                postAvatar.setWidth(600);
+                postAvatar = postAvatarRepository.save(postAvatar);
+                uploadAndSavePostImage(image, postAvatar);
+            }
+            List<PostAvatar> updatedAvatars = postAvatarRepository.findAllByPost(post);
+            return post.toPostUpResDTO(updatedAvatars);
+
+        }
+
+
+
+//        if (postUpReqDTO.getImages() == null) {
+//            PostUpResDTO postUpResDTO = post.toPostUpResDTO(post.getPostImages());
+//            return postUpResDTO;
+//        } else {
+//            List<PostAvatar> postAvatars = postAvatarRepository.findAllByPost(post);
+//            postAvatarRepository.deleteAll(postAvatars);
+//
+//            List<PostAvatar> postAvatarList = new ArrayList<>();
+//            for (MultipartFile image : postUpReqDTO.getImages()) {
+//                PostAvatar postAvatar = new PostAvatar();
+//                postAvatar.setPost(post);
+//                postAvatar.setHeight(600);
+//                postAvatar.setWidth(600);
+//                postAvatar = postAvatarRepository.save(postAvatar);
+//                uploadAndSavePostImage(image, postAvatar);
+//
+//                postAvatarList.add(postAvatar);
+//            }
+//            PostUpResDTO postUpResDTO = post.toPostUpResDTO(postAvatarList);
+//            return postUpResDTO;
+//        }
+    }
+
+    @Override
+    public PostCountDTO countPost() {
+        return postRepository.countPost();
     }
 
     public void uploadAndSavePostImage(MultipartFile image, PostAvatar postAvatar) {

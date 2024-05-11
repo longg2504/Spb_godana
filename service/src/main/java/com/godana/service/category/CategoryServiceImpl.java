@@ -1,5 +1,6 @@
 package com.godana.service.category;
 
+import com.godana.domain.dto.category.CategoryCountDTO;
 import com.godana.domain.dto.category.CategoryCreReqDTO;
 import com.godana.domain.dto.category.CategoryCreResDTO;
 import com.godana.domain.dto.category.CategoryDTO;
@@ -71,5 +72,10 @@ public class CategoryServiceImpl implements ICategoryService{
         categoryCreResDTO.setTitleNumericalOrder(category.getTitlenumericalOrder());
         categoryCreResDTO.setSvg(category.getSvg());
         return categoryCreResDTO;
+    }
+
+    @Override
+    public CategoryCountDTO countCategory() {
+        return categoryRepository.countCategory();
     }
 }

@@ -1,5 +1,6 @@
 package com.godana.service.category;
 
+import com.godana.domain.dto.category.CategoryCountDTO;
 import com.godana.domain.dto.category.CategoryCreReqDTO;
 import com.godana.domain.dto.category.CategoryCreResDTO;
 import com.godana.domain.dto.category.CategoryDTO;
@@ -16,4 +17,6 @@ public interface ICategoryService extends IGeneralService<Category, Long> {
     Boolean existsByTitle(String title);
 
     CategoryCreResDTO createCategory(CategoryCreReqDTO categoryCreReqDTO);
+
+    CategoryCountDTO countCategory();
 }

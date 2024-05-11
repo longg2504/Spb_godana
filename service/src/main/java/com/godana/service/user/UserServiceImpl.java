@@ -1,5 +1,6 @@
 package com.godana.service.user;
 
+import com.godana.domain.dto.user.UserCountDTO;
 import com.godana.domain.dto.user.UserRegisterReqDTO;
 import com.godana.domain.dto.user.UserReqUpDTO;
 import com.godana.domain.dto.user.UserResDTO;
@@ -157,6 +158,11 @@ public class UserServiceImpl implements IUserService {
     @Override
     public Page<UserResDTO> findUserBanBySearch(String search, Pageable pageable) {
         return userRepository.findUserBanBySearch(search, pageable);
+    }
+
+    @Override
+    public UserCountDTO countUser() {
+        return userRepository.countUser();
     }
 
     @Override

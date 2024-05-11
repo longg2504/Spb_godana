@@ -1,6 +1,7 @@
 package com.godana.service.user;
 
 
+import com.godana.domain.dto.user.UserCountDTO;
 import com.godana.domain.dto.user.UserRegisterReqDTO;
 import com.godana.domain.dto.user.UserReqUpDTO;
 import com.godana.domain.dto.user.UserResDTO;
@@ -30,7 +31,7 @@ public interface IUserService extends IGeneralService<User, Long>, UserDetailsSe
 
     Page<UserResDTO> findUserBanBySearch(@Param("search") String search, Pageable pageable);
 
-
+    UserCountDTO countUser();
 
     void unban(User user);
 }

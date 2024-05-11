@@ -1,5 +1,6 @@
 package com.godana.repository.place;
 
+import com.godana.domain.dto.place.PlaceCountDTO;
 import com.godana.domain.dto.place.PlaceDTO;
 import com.godana.domain.dto.placeAvatar.PlaceAvatarDTO;
 import com.godana.domain.entity.Category;
@@ -55,4 +56,13 @@ public interface PlaceRepository extends JpaRepository<Place,Long> {
             "WHERE ST_Distance_Sphere(ST_PointFromText(CONCAT('POINT(', p.longitude, ' ', p.latitude, ')')),ST_PointFromText(CONCAT('POINT(', :longitude, ' ', :latitude, ')')), 4326) <= 1 AND p.id <> :id " +
             "GROUP BY p.id ")
     List<Place> findNearPlace(float longitude, float latitude, Long id);
+
+
+    @Query("SELECT NEW com.godana.domain.dto.place.PlaceCountDTO (" +
+            "count(p.id)" +
+            ") " +
+            "FROM Place AS p " +
+            "WHERE p.deleted = false "
+    )
+    PlaceCountDTO countPlace();
 }

@@ -1,5 +1,6 @@
 package com.godana.service.rating;
 
+import com.godana.domain.dto.rating.RatingCountDTO;
 import com.godana.domain.dto.rating.RatingCreReqDTO;
 import com.godana.domain.dto.rating.RatingCreResDTO;
 import com.godana.domain.dto.rating.RatingDTO;
@@ -79,5 +80,10 @@ public class RatingServiceImpl implements IRatingService{
         RatingCreResDTO ratingCreResDTO = rating.toRaingCreResDTO();
 
         return ratingCreResDTO;
+    }
+
+    @Override
+    public RatingCountDTO countRating() {
+        return ratingRepository.countRating();
     }
 }

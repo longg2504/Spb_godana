@@ -13,4 +13,6 @@ public interface IPostService extends IGeneralService<Post, Long> {
     PostCreResDTO createPost(PostCreReqDTO postCreReqDTO);
 
     PostUpResDTO updatePost(PostUpReqDTO postUpReqDTO, Long postId);
+
+    PostCountDTO countPost();
 }

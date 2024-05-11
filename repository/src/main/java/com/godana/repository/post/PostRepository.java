@@ -1,5 +1,7 @@
 package com.godana.repository.post;
 
+import com.godana.domain.dto.place.PlaceCountDTO;
+import com.godana.domain.dto.post.PostCountDTO;
 import com.godana.domain.dto.post.PostDTO;
 import com.godana.domain.entity.Category;
 import com.godana.domain.entity.Post;
@@ -32,7 +34,16 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "ON c.post.id = p.id " +
             "WHERE (:category IS NULL OR p.category = :category) " +
             "AND p.deleted = false " +
-            "GROUP BY p.id "
+            "GROUP BY p.id " +
+            "ORDER BY p.createdAt DESC"
     )
-    Page<PostDTO> findAllByCategory(@Param("category")Category category, Pageable pageable);
+    Page<PostDTO> findAllByCategory(@Param("category") Category category, Pageable pageable);
+
+    @Query("SELECT NEW com.godana.domain.dto.post.PostCountDTO (" +
+            "count(p.id)" +
+            ") " +
+            "FROM Post AS p " +
+            "WHERE p.deleted = false "
+    )
+    PostCountDTO countPost();
 }

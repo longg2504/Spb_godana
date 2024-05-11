@@ -2,6 +2,8 @@ package com.godana.repository.user;
 
 
 
+import com.godana.domain.dto.place.PlaceCountDTO;
+import com.godana.domain.dto.user.UserCountDTO;
 import com.godana.domain.dto.user.UserResDTO;
 import com.godana.domain.entity.User;
 import org.springframework.data.domain.Page;
@@ -65,4 +67,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "AND u.role.id = 2 "
     )
     Page<UserResDTO> findUserBanBySearch(@Param("search") String search, Pageable pageable);
+
+    @Query("SELECT NEW com.godana.domain.dto.user.UserCountDTO (" +
+            "count(u.id)" +
+            ") " +
+            "FROM User AS u " +
+            "WHERE u.deleted = false "
+    )
+    UserCountDTO countUser();
 }

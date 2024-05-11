@@ -1,5 +1,6 @@
 package com.godana.domain.entity;
 
+import com.godana.domain.dto.like.LikeDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,4 +28,9 @@ public class Like extends BaseEntity{
     @ManyToOne
     @JoinColumn(name="user_id" , referencedColumnName = "id" , nullable = false)
     private User user;
+
+    public LikeDTO toLikeDTO(int like , int comment){
+        return new LikeDTO()
+                .setPost(post.toPostDTO(like, comment));
+    }
 }

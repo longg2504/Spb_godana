@@ -41,22 +41,36 @@ public class PostAPI {
         return new ResponseEntity<>(postDTOS, HttpStatus.OK);
     }
 
+    @GetMapping("/{postId}")
+    public ResponseEntity<?> getPostById(@PathVariable("postId") String postIdStr){
+        if(!validateUtils.isNumberValid(postIdStr)){
+            throw new DataInputException("ID Post không đúng định dạng");
+        }
+        Long postId = Long.parseLong(postIdStr);
+
+        Optional<Post> postOptional = iPostService.findById(postId);
+        if(!postOptional.isPresent()){
+            throw new DataInputException("Bài Post này không có xin vui lòng xem lại");
+        }
+        Post post = postOptional.get();
+        PostDTO postDTO = post.toPostDTO(post.getLikes().size(), post.getComments().size());
+        return new ResponseEntity<>(postDTO, HttpStatus.OK);
+    }
+
+
+
     @PostMapping
     public ResponseEntity<?> createPost(@ModelAttribute PostCreReqDTO postCreReqDTO){
         PostCreResDTO postCreResDTO = iPostService.createPost(postCreReqDTO);
         return new ResponseEntity<>(postCreResDTO, HttpStatus.OK);
     }
 
-    @PatchMapping("/{postId}")
-    public ResponseEntity<?> updatePost(@PathVariable("postId") String postIdStr, PostUpReqDTO postUpReqDTO) {
+    @PostMapping("/{postId}")
+    public ResponseEntity<?> updatePost(@PathVariable("postId") String postIdStr, @ModelAttribute PostUpReqDTO postUpReqDTO) {
         if(!validateUtils.isNumberValid(postIdStr)) {
             throw new DataInputException("Mã bài viết không hợp lệ vui lòng xem lại !!!");
         }
         Long postId = Long.parseLong(postIdStr);
-        Optional<Post> postOptional =  iPostService.findById(postId);
-        if(!postOptional.isPresent()){
-            throw new DataInputException("Mã bài viết muốn sữa không tồn tại vui lòng xem lại !!!");
-        }
         PostUpResDTO postUpResDTO = iPostService.updatePost(postUpReqDTO, postId);
 
         return new ResponseEntity<>(postUpResDTO, HttpStatus.OK);

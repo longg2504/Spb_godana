@@ -22,4 +22,7 @@ public interface IPlaceService extends IGeneralService<Place, Long> {
 
     List<Place> findNearPlace(float longitude, float latitude, Long id);
 
+    PlaceCountDTO countPlace();
+
+
 }

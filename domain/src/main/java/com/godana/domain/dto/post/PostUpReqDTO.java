@@ -17,5 +17,7 @@ import java.util.List;
 public class PostUpReqDTO {
     private String postTitle;
     private String content;
-    private Long userId;
+    private Long categoryId;
+    private List<String> listIdAvatarCurrrent;
+    private List<MultipartFile> images;
 }

@@ -1,6 +1,8 @@
 package com.godana.repository.category;
 
+import com.godana.domain.dto.category.CategoryCountDTO;
 import com.godana.domain.dto.category.CategoryDTO;
+import com.godana.domain.dto.place.PlaceCountDTO;
 import com.godana.domain.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,5 +19,13 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     Optional<Category> findByIdAndDeletedFalse(Long id);
     
     Boolean existsByTitle(String title);
+
+    @Query("SELECT NEW com.godana.domain.dto.category.CategoryCountDTO (" +
+            "count(c.id)" +
+            ") " +
+            "FROM Category AS c " +
+            "WHERE c.deleted = false "
+    )
+    CategoryCountDTO countCategory();
 
 }

@@ -91,6 +91,11 @@ public class PlaceServiceImpl implements IPlaceService {
     }
 
     @Override
+    public PlaceCountDTO countPlace() {
+        return placeRepository.countPlace();
+    }
+
+    @Override
     public Optional<Place> findPlaceByIdAndDeletedFalse(Long id) {
         return placeRepository.findPlaceByIdAndDeletedFalse(id);
     }
