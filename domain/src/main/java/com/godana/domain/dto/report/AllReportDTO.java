@@ -12,10 +12,13 @@ import java.util.List;
 @Getter
 @Setter
 public class AllReportDTO {
-    IReportDTO dayPlaceReport;
-    IReportDTO monthPlaceReport;
+    IReportDTO dayPlacesReport;
+    IReportDTO monthPlacesReport;
     List<IYearReportDTO> yearPlacesReport;
     List<I6MonthAgoReportDTO> placeSixMonthAgoReport;
+    IReportDTO dayUsersReport;
+    IReportDTO monthUsersReport;
+    List<IYearReportDTO> yearUsersReport;
     List<I6MonthAgoReportDTO> userSixMonthAgoReport;
     List<ICountPlaceByCateReportDTO> countPlacesByCateReport;
     Long countUser;

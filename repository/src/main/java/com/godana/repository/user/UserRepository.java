@@ -4,6 +4,8 @@ package com.godana.repository.user;
 
 import com.godana.domain.dto.place.PlaceCountDTO;
 import com.godana.domain.dto.report.I6MonthAgoReportDTO;
+import com.godana.domain.dto.report.IReportDTO;
+import com.godana.domain.dto.report.IYearReportDTO;
 import com.godana.domain.dto.user.UserCountDTO;
 import com.godana.domain.dto.user.UserResDTO;
 import com.godana.domain.entity.User;
@@ -78,6 +80,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
     )
     UserCountDTO countUser();
 
+    @Query(value = "SELECT * FROM v_get_users_current_day", nativeQuery = true)
+    IReportDTO getUserReportOfCurrentDay();
+
+    @Query(value = "SELECT * FROM v_get_users_current_month", nativeQuery = true)
+    IReportDTO getUserReportOfCurrentMonth();
+
+    @Query(value = "SELECT * FROM v_get_users_current_year", nativeQuery = true)
+    List<IYearReportDTO> getUserReportByCurrentYear();
     @Query(value = "SELECT * FROM v_get_users_last_6_months", nativeQuery = true)
     List<I6MonthAgoReportDTO> getUserReport6Months();
 }

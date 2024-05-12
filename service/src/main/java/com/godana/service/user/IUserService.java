@@ -2,6 +2,8 @@ package com.godana.service.user;
 
 
 import com.godana.domain.dto.report.I6MonthAgoReportDTO;
+import com.godana.domain.dto.report.IReportDTO;
+import com.godana.domain.dto.report.IYearReportDTO;
 import com.godana.domain.dto.user.UserCountDTO;
 import com.godana.domain.dto.user.UserRegisterReqDTO;
 import com.godana.domain.dto.user.UserReqUpDTO;
@@ -36,6 +38,12 @@ public interface IUserService extends IGeneralService<User, Long>, UserDetailsSe
     UserCountDTO countUser();
 
     void unban(User user);
+
+    IReportDTO getUserReportOfCurrentDay();
+
+    IReportDTO getUserReportOfCurrentMonth();
+
+    List<IYearReportDTO> getUserReportByCurrentYear();
 
     List<I6MonthAgoReportDTO> getUserReport6Months();
 }

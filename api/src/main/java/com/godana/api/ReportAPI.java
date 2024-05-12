@@ -40,6 +40,9 @@ public class ReportAPI {
         IReportDTO placesMonthReport = iPlaceService.getPlaceReportOfCurrentMonth();
         List<IYearReportDTO> placesYearReport = iPlaceService.getPlaceReportByCurrentYear();
         List<I6MonthAgoReportDTO> placesSixMonthReport = iPlaceService.getPlaceReport6Months();
+        IReportDTO usersDayReport = iUserService.getUserReportOfCurrentDay();
+        IReportDTO usersMonthReport = iUserService.getUserReportOfCurrentMonth();
+        List<IYearReportDTO> usersYearReport = iUserService.getUserReportByCurrentYear();
         List<I6MonthAgoReportDTO> usersSixMonthReport = iUserService.getUserReport6Months();
         List<ICountPlaceByCateReportDTO> countPlacesByCategoryReport = iCategoryService.getCountPlaceByCategory();
         PlaceCountDTO placeCountDTO = iPlaceService.countPlace();
@@ -49,12 +52,18 @@ public class ReportAPI {
         UserCountDTO userCountDTO = iUserService.countUser();
 
         AllReportDTO allReportDTO = new AllReportDTO();
-        allReportDTO.setDayPlaceReport(placesDayReport);
-        allReportDTO.setMonthPlaceReport(placesMonthReport);
+        allReportDTO.setDayPlacesReport(placesDayReport);
+        allReportDTO.setMonthPlacesReport(placesMonthReport);
         allReportDTO.setYearPlacesReport(placesYearReport);
         allReportDTO.setPlaceSixMonthAgoReport(placesSixMonthReport);
+
+        allReportDTO.setDayUsersReport(usersDayReport);
+        allReportDTO.setMonthUsersReport(usersMonthReport);
+        allReportDTO.setYearUsersReport(usersYearReport);
         allReportDTO.setUserSixMonthAgoReport(usersSixMonthReport);
+
         allReportDTO.setCountPlacesByCateReport(countPlacesByCategoryReport);
+
         allReportDTO.setCountPlace(placeCountDTO.getCountPlace());
         allReportDTO.setCountPost(postCountDTO.getCountPost());
         allReportDTO.setCountCategory(categoryCountDTO.getCountCategory());

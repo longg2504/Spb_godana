@@ -1,6 +1,8 @@
 package com.godana.service.user;
 
 import com.godana.domain.dto.report.I6MonthAgoReportDTO;
+import com.godana.domain.dto.report.IReportDTO;
+import com.godana.domain.dto.report.IYearReportDTO;
 import com.godana.domain.dto.user.UserCountDTO;
 import com.godana.domain.dto.user.UserRegisterReqDTO;
 import com.godana.domain.dto.user.UserReqUpDTO;
@@ -170,6 +172,21 @@ public class UserServiceImpl implements IUserService {
     public void unban(User user) {
         user.setDeleted(false);
         userRepository.save(user);
+    }
+
+    @Override
+    public IReportDTO getUserReportOfCurrentDay() {
+        return userRepository.getUserReportOfCurrentDay();
+    }
+
+    @Override
+    public IReportDTO getUserReportOfCurrentMonth() {
+        return userRepository.getUserReportOfCurrentMonth();
+    }
+
+    @Override
+    public List<IYearReportDTO> getUserReportByCurrentYear() {
+        return userRepository.getUserReportByCurrentYear();
     }
 
     @Override
