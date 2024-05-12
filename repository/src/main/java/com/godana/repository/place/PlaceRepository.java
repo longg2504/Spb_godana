@@ -3,6 +3,9 @@ package com.godana.repository.place;
 import com.godana.domain.dto.place.PlaceCountDTO;
 import com.godana.domain.dto.place.PlaceDTO;
 import com.godana.domain.dto.placeAvatar.PlaceAvatarDTO;
+import com.godana.domain.dto.report.I6MonthAgoReportDTO;
+import com.godana.domain.dto.report.IReportDTO;
+import com.godana.domain.dto.report.IYearReportDTO;
 import com.godana.domain.entity.Category;
 import com.godana.domain.entity.Place;
 import com.godana.domain.entity.PlaceAvatar;
@@ -65,4 +68,18 @@ public interface PlaceRepository extends JpaRepository<Place,Long> {
             "WHERE p.deleted = false "
     )
     PlaceCountDTO countPlace();
+
+
+    @Query(value = "SELECT * FROM v_get_places_current_day", nativeQuery = true)
+    IReportDTO getPlaceReportOfCurrentDay();
+
+    @Query(value = "SELECT * FROM v_get_places_current_month", nativeQuery = true)
+    IReportDTO getPlaceReportOfCurrentMonth();
+
+    @Query(value = "SELECT * FROM v_get_places_current_year", nativeQuery = true)
+    List<IYearReportDTO> getPlaceReportByCurrentYear();
+
+    @Query(value = "SELECT * FROM v_get_places_last_6_months", nativeQuery = true)
+    List<I6MonthAgoReportDTO> getPlaceReport6Months();
+
 }

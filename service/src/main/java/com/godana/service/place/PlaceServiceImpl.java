@@ -2,6 +2,9 @@ package com.godana.service.place;
 
 import com.godana.domain.dto.place.*;
 import com.godana.domain.dto.placeAvatar.PlaceAvatarDTO;
+import com.godana.domain.dto.report.I6MonthAgoReportDTO;
+import com.godana.domain.dto.report.IReportDTO;
+import com.godana.domain.dto.report.IYearReportDTO;
 import com.godana.domain.entity.*;
 import com.godana.domain.enums.EPlaceStatus;
 import com.godana.exception.DataInputException;
@@ -93,6 +96,26 @@ public class PlaceServiceImpl implements IPlaceService {
     @Override
     public PlaceCountDTO countPlace() {
         return placeRepository.countPlace();
+    }
+
+    @Override
+    public IReportDTO getPlaceReportOfCurrentDay() {
+        return placeRepository.getPlaceReportOfCurrentDay();
+    }
+
+    @Override
+    public IReportDTO getPlaceReportOfCurrentMonth() {
+        return placeRepository.getPlaceReportOfCurrentMonth();
+    }
+
+    @Override
+    public List<IYearReportDTO> getPlaceReportByCurrentYear() {
+        return placeRepository.getPlaceReportByCurrentYear();
+    }
+
+    @Override
+    public List<I6MonthAgoReportDTO> getPlaceReport6Months() {
+        return placeRepository.getPlaceReport6Months();
     }
 
     @Override

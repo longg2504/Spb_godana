@@ -1,6 +1,7 @@
 package com.godana.service.user;
 
 
+import com.godana.domain.dto.report.I6MonthAgoReportDTO;
 import com.godana.domain.dto.user.UserCountDTO;
 import com.godana.domain.dto.user.UserRegisterReqDTO;
 import com.godana.domain.dto.user.UserReqUpDTO;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface IUserService extends IGeneralService<User, Long>, UserDetailsService {
@@ -34,4 +36,6 @@ public interface IUserService extends IGeneralService<User, Long>, UserDetailsSe
     UserCountDTO countUser();
 
     void unban(User user);
+
+    List<I6MonthAgoReportDTO> getUserReport6Months();
 }

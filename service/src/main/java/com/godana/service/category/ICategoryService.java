@@ -4,6 +4,7 @@ import com.godana.domain.dto.category.CategoryCountDTO;
 import com.godana.domain.dto.category.CategoryCreReqDTO;
 import com.godana.domain.dto.category.CategoryCreResDTO;
 import com.godana.domain.dto.category.CategoryDTO;
+import com.godana.domain.dto.report.ICountPlaceByCateReportDTO;
 import com.godana.domain.entity.Category;
 import com.godana.service.IGeneralService;
 
@@ -19,4 +20,6 @@ public interface ICategoryService extends IGeneralService<Category, Long> {
     CategoryCreResDTO createCategory(CategoryCreReqDTO categoryCreReqDTO);
 
     CategoryCountDTO countCategory();
+
+    List<ICountPlaceByCateReportDTO> getCountPlaceByCategory();
 }

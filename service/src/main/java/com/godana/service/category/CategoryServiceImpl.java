@@ -4,6 +4,7 @@ import com.godana.domain.dto.category.CategoryCountDTO;
 import com.godana.domain.dto.category.CategoryCreReqDTO;
 import com.godana.domain.dto.category.CategoryCreResDTO;
 import com.godana.domain.dto.category.CategoryDTO;
+import com.godana.domain.dto.report.ICountPlaceByCateReportDTO;
 import com.godana.domain.entity.Category;
 import com.godana.repository.category.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,5 +78,10 @@ public class CategoryServiceImpl implements ICategoryService{
     @Override
     public CategoryCountDTO countCategory() {
         return categoryRepository.countCategory();
+    }
+
+    @Override
+    public List<ICountPlaceByCateReportDTO> getCountPlaceByCategory() {
+        return categoryRepository.getCountPlaceByCategory();
     }
 }

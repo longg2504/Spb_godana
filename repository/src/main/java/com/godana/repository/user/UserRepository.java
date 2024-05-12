@@ -3,6 +3,7 @@ package com.godana.repository.user;
 
 
 import com.godana.domain.dto.place.PlaceCountDTO;
+import com.godana.domain.dto.report.I6MonthAgoReportDTO;
 import com.godana.domain.dto.user.UserCountDTO;
 import com.godana.domain.dto.user.UserResDTO;
 import com.godana.domain.entity.User;
@@ -13,6 +14,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -75,4 +77,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "WHERE u.deleted = false "
     )
     UserCountDTO countUser();
+
+    @Query(value = "SELECT * FROM v_get_users_last_6_months", nativeQuery = true)
+    List<I6MonthAgoReportDTO> getUserReport6Months();
 }

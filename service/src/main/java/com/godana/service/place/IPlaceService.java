@@ -1,11 +1,15 @@
 package com.godana.service.place;
 
 import com.godana.domain.dto.place.*;
+import com.godana.domain.dto.report.I6MonthAgoReportDTO;
+import com.godana.domain.dto.report.IReportDTO;
+import com.godana.domain.dto.report.IYearReportDTO;
 import com.godana.domain.entity.Category;
 import com.godana.domain.entity.Place;
 import com.godana.service.IGeneralService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
@@ -23,6 +27,14 @@ public interface IPlaceService extends IGeneralService<Place, Long> {
     List<Place> findNearPlace(float longitude, float latitude, Long id);
 
     PlaceCountDTO countPlace();
+
+    IReportDTO getPlaceReportOfCurrentDay();
+
+    IReportDTO getPlaceReportOfCurrentMonth();
+
+    List<IYearReportDTO> getPlaceReportByCurrentYear();
+
+    List<I6MonthAgoReportDTO> getPlaceReport6Months();
 
 
 }
