@@ -1,5 +1,6 @@
 package com.godana.domain.entity;
 
+import com.godana.domain.dto.comment.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -38,4 +40,44 @@ public class Comment extends BaseEntity{
 
     @OneToMany(mappedBy = "commentParent")
     private List<Comment> comments;
+
+    public CommenCreResDTO toCommentCreResDTO(Date createAt){
+        return new CommenCreResDTO()
+                .setCommentId(id)
+                .setContent(content)
+                .setCommentParentId(null)
+                .setPostId(post.getId())
+                .setUserId(user.getId())
+                .setCreatedAt(createAt)
+                ;
+
+    }
+
+    public ReplyCreResDTO toReplyCreResDTO(Date createdAt, Long commentParentId){
+        return new ReplyCreResDTO()
+                .setCommentId(id)
+                .setContent(content)
+                .setCommentParentId(commentParentId)
+                .setPostId(post.getId())
+                .setUserId(user.getId())
+                .setCreatedAt(createdAt)
+        ;
+    }
+
+    public CommentResDTO toCommentResDTO(Date createdAt, Long count){
+        return new CommentResDTO()
+                .setCommentId(id)
+                .setContent(content)
+                .setUser(user.toUserResDTO())
+                .setCreatedAt(createdAt)
+                .setCountReply(count)
+                ;
+    }
+
+    public ReplyResDTO toReplyResDTO(Date createdAt){
+        return new ReplyResDTO()
+                .setCommentId(id)
+                .setUser(user.toUserResDTO())
+                .setCreatedAt(createdAt);
+    }
 }

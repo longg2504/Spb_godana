@@ -53,7 +53,7 @@ public class PostAPI {
             throw new DataInputException("Bài Post này không có xin vui lòng xem lại");
         }
         Post post = postOptional.get();
-        PostDTO postDTO = post.toPostDTO(post.getLikes().size(), post.getComments().size());
+        PostDTO postDTO = post.toPostDTO(post.getLikes().size(), post.getComments().size(), post.getCreatedAt());
         return new ResponseEntity<>(postDTO, HttpStatus.OK);
     }
 

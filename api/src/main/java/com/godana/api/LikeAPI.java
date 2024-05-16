@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,7 +45,8 @@ public class LikeAPI {
             Optional<Post> postOptional = iPostService.findById(item.getPost().getId());
             int totalLikes = postOptional.get().getLikes().size();
             int totalComments = postOptional.get().getComments().size();
-             likeDTOS.add(item.toLikeDTO(totalLikes, totalComments));
+            Date createAt = postOptional.get().getCreatedAt();
+             likeDTOS.add(item.toLikeDTO(totalLikes, totalComments,createAt));
         }
         if(likeDTOS.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

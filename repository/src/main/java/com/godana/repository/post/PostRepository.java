@@ -23,8 +23,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "p.content," +
             "p.category," +
             "p.user, " +
-            "CASE WHEN COUNT(l.id) is NULL THEN 0 ELSE COUNT(l.id) END, " +
-            "CASE WHEN COUNT(c.id) is NULL THEN 0 ELSE COUNT(c.id) END, " +
+            "CASE WHEN COUNT(DISTINCT l.id) is NULL THEN 0 ELSE COUNT(DISTINCT l.id) END, " +
+            "CASE WHEN COUNT(DISTINCT c.id) is NULL THEN 0 ELSE COUNT(DISTINCT c.id) END, " +
             "p.createdAt " +
             ") " +
             "FROM Post as p " +
@@ -34,8 +34,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "ON c.post.id = p.id " +
             "WHERE (:category IS NULL OR p.category = :category) " +
             "AND p.deleted = false " +
-            "GROUP BY p.id " +
-            "ORDER BY p.createdAt DESC"
+            "GROUP BY p.id, p.postTitle, p.content, p.category, p.user, p.createdAt " +
+            "ORDER BY p.createdAt DESC "
     )
     Page<PostDTO> findAllByCategory(@Param("category") Category category, Pageable pageable);
 

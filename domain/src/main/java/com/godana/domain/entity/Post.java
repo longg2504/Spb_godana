@@ -12,6 +12,7 @@ import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -80,7 +81,7 @@ public class Post extends BaseEntity{
                 .setCategory(category.toCategoryDTO());
     }
 
-    public PostDTO toPostDTO(int like, int comment) {
+    public PostDTO toPostDTO(int like, int comment, Date createAt) {
         return new PostDTO()
                 .setId(id)
                 .setTitle(postTitle)
@@ -90,6 +91,7 @@ public class Post extends BaseEntity{
                 .setPostAvatar(toAvatarResDTOList(postImages))
                 .setLike(like)
                 .setComment(comment)
+                .setCreatedAt(createAt)
                 ;
     }
 

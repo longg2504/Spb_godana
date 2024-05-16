@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @AllArgsConstructor
@@ -29,8 +30,8 @@ public class Like extends BaseEntity{
     @JoinColumn(name="user_id" , referencedColumnName = "id" , nullable = false)
     private User user;
 
-    public LikeDTO toLikeDTO(int like , int comment){
+    public LikeDTO toLikeDTO(int like , int comment, Date createAt){
         return new LikeDTO()
-                .setPost(post.toPostDTO(like, comment));
+                .setPost(post.toPostDTO(like, comment, createAt));
     }
 }
