@@ -58,6 +58,11 @@ public class CommentServiceImpl implements ICommentService{
     }
 
     @Override
+    public List<Comment> findAllByPost(Post post) {
+        return commentRepository.findAllByPost(post);
+    }
+
+    @Override
     public List<ReplyResDTO> findAllByCommentParentId(Long commentParentId) {
         return commentRepository.findAllByCommentParentId(commentParentId);
     }

@@ -19,6 +19,4 @@ import java.util.List;
 public class FavouriteDTO {
     private Long id;
     private PlaceDTO place;
-
-
 }

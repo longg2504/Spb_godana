@@ -93,4 +93,9 @@ public class LikeServiceImpl implements ILikeService{
     public List<Like> findByUserId(Long userId) {
         return likeRepository.findByUserId(userId);
     }
+
+    @Override
+    public List<Like> findAllByPost(Post post) {
+        return likeRepository.findAllByPost(post);
+    }
 }

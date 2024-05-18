@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IFavouriteService extends IGeneralService<Favourite, Long> {
-    List<Favourite> findAllByUserId(Long userId);
+    List<Favourite> findAllByUserIdAndDeletedFalse(Long userId);
 
     Optional<Favourite> findByUserIdAndPlaceId(Long userId, Long placeId);
 
-    void create(User user, Place place);
+    Favourite create(User user, Place place);
 }

@@ -8,11 +8,13 @@ import com.godana.domain.entity.Post;
 import com.godana.domain.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -38,6 +40,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "ORDER BY p.createdAt DESC "
     )
     Page<PostDTO> findAllByCategory(@Param("category") Category category, Pageable pageable);
+
+    List<Post> findAllByUserIdAndDeleted(Long userId, boolean deleted, Sort sort);
 
     @Query("SELECT NEW com.godana.domain.dto.post.PostCountDTO (" +
             "count(p.id)" +

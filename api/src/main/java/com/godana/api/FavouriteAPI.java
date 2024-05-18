@@ -47,7 +47,7 @@ public class FavouriteAPI {
         if(!userOptional.isPresent()){
             throw new DataInputException("User không tồn tại");
         }
-        List<Favourite> favourites = iFavouriteService.findAllByUserId(userId);
+        List<Favourite> favourites = iFavouriteService.findAllByUserIdAndDeletedFalse(userId);
         List<FavouriteDTO> favouriteDTOS = new ArrayList<>();
         for(Favourite item : favourites){
             Optional<Place> placeOptional = iPlaceService.findById(item.getPlace().getId());
@@ -85,9 +85,12 @@ public class FavouriteAPI {
             throw new DataInputException("Place không tồn tại");
         }
         Place place = placeOptional.get();
-        iFavouriteService.create(user, place);
+        Favourite favourite = iFavouriteService.create(user, place);
+        Double rating = calculateAverage(favourite.getPlace().getRatingList()).getAverageRating();
+        Integer numberRating = calculateAverage(favourite.getPlace().getRatingList()).getNumberOfRatings();
+        FavouriteDTO favouriteDTO = favourite.toFavouriteDTO(favourite.getPlace().getPlaceAvatarList(), rating , numberRating);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(favouriteDTO,HttpStatus.CREATED);
 
     }
 

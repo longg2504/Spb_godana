@@ -5,6 +5,8 @@ import com.godana.domain.dto.post.*;
 import com.godana.domain.dto.postAvatar.PostAvatarResDTO;
 import com.godana.domain.entity.*;
 import com.godana.exception.DataInputException;
+import com.godana.repository.comment.CommentRepository;
+import com.godana.repository.like.LikeRepository;
 import com.godana.repository.postAvatar.PostAvatarRepository;
 import com.godana.repository.category.CategoryRepository;
 import com.godana.repository.post.PostRepository;
@@ -14,6 +16,7 @@ import com.godana.utils.UploadUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,6 +41,10 @@ public class PostServiceImpl implements IPostService{
     private UploadUtils uploadUtils;
     @Autowired
     private IUploadService iUploadService;
+    @Autowired
+    private LikeRepository likeRepository;
+    @Autowired
+    private CommentRepository commentRepository;
     @Override
     public List<Post> findAll() {
         return postRepository.findAll();
@@ -55,7 +62,31 @@ public class PostServiceImpl implements IPostService{
 
     @Override
     public void delete(Post post) {
-        postRepository.delete(post);
+        List<PostAvatar> postAvatars = postAvatarRepository.findAllByPost(post);
+        if(!postAvatars.isEmpty()){
+            for(PostAvatar item : postAvatars){
+                item.setDeleted(true);
+                postAvatarRepository.save(item);
+            }
+        }
+        List<Like> likeList = likeRepository.findAllByPost(post);
+        if(!likeList.isEmpty()){
+            for(Like item : likeList){
+                item.setDeleted(true);
+                likeRepository.save(item);
+            }
+        }
+
+        List<Comment> commentList = commentRepository.findAllByPost(post);
+        if(!commentList.isEmpty()){
+            for(Comment item : commentList){
+                item.setDeleted(true);
+                commentRepository.save(item);
+            }
+        }
+
+        post.setDeleted(true);
+        postRepository.save(post);
     }
 
     @Override
@@ -78,6 +109,12 @@ public class PostServiceImpl implements IPostService{
         }
         return postDTOS;
     }
+
+    @Override
+    public List<Post> findAllByUserIdAndDeleted(Long userId, boolean deleted) {
+        return postRepository.findAllByUserIdAndDeleted(userId, false, Sort.by(Sort.Direction.DESC, "createdAt"));
+    }
+
 
     @Override
     public PostCreResDTO createPost(PostCreReqDTO postCreReqDTO) {

@@ -57,6 +57,26 @@ public class PostAPI {
         return new ResponseEntity<>(postDTO, HttpStatus.OK);
     }
 
+    @GetMapping("/get_all_post_by_user/{userId}")
+    public ResponseEntity<?> getPostByUserId(@PathVariable("userId") String userIdStr){
+        if(!validateUtils.isNumberValid(userIdStr)){
+            throw new DataInputException("ID User không đúng định dạng");
+        }
+
+        Long userId = Long.parseLong(userIdStr);
+        Optional<User> userOptional = iUserService.findById(userId);
+        if(!userOptional.isPresent()){
+            throw new DataInputException("User này không tồn tại");
+        }
+        List<Post> postList = iPostService.findAllByUserIdAndDeleted(userId, false);
+        List<PostDTO> postDTOS = new ArrayList<>();
+        for(Post item : postList){
+            postDTOS.add(item.toPostDTO(item.getLikes().size(), item.getComments().size(), item.getCreatedAt()));
+        }
+
+        return new ResponseEntity<>(postDTOS, HttpStatus.OK);
+    }
+
 
 
     @PostMapping
@@ -76,7 +96,21 @@ public class PostAPI {
         return new ResponseEntity<>(postUpResDTO, HttpStatus.OK);
     }
 
+    @PostMapping("/deleted/{postId}")
+    public ResponseEntity<?> deletedPost(@PathVariable("postId") String postIdStr){
+        if(!validateUtils.isNumberValid(postIdStr)){
+            throw new DataInputException("Mã bài viết không hợp lệ vui lòng xem lại !!!");
+        }
 
+        Long postId = Long.parseLong(postIdStr);
+        Optional<Post> postOptional = iPostService.findById(postId);
+        if(!postOptional.isPresent()){
+            throw new DataInputException("Bài viết này không tồn tại");
+        }
+        Post post = postOptional.get();
+        iPostService.delete(post);
 
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }

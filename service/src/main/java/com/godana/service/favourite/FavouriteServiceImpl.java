@@ -43,8 +43,8 @@ public class FavouriteServiceImpl implements IFavouriteService{
     }
 
     @Override
-    public List<Favourite> findAllByUserId(Long userId) {
-        return favouriteRepository.findAllByUserId(userId);
+    public List<Favourite> findAllByUserIdAndDeletedFalse(Long userId) {
+        return favouriteRepository.findAllByUserIdAndDeletedFalse(userId);
     }
 
     @Override
@@ -53,11 +53,14 @@ public class FavouriteServiceImpl implements IFavouriteService{
     }
 
     @Override
-    public void create(User user, Place place) {
+    public Favourite create(User user, Place place) {
         Favourite favourite = new Favourite();
         favourite.setId(null);
         favourite.setUser(user);
         favourite.setPlace(place);
-        favouriteRepository.save(favourite);
+        favourite = favouriteRepository.save(favourite);
+
+
+        return favourite;
     }
 }

@@ -3,6 +3,7 @@ package com.godana.repository.comment;
 import com.godana.domain.dto.comment.CommentResDTO;
 import com.godana.domain.dto.comment.ReplyResDTO;
 import com.godana.domain.entity.Comment;
+import com.godana.domain.entity.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -43,4 +44,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             "GROUP BY c1.id "
     )
     List<ReplyResDTO> findAllByCommentParentId(Long commentParentId);
+
+    List<Comment> findAllByPost(Post post);
 }
