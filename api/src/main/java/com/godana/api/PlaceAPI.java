@@ -14,6 +14,7 @@ import com.godana.utils.ValidateUtils;
 import javassist.expr.NewArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +45,9 @@ public class PlaceAPI {
                                          @RequestParam (defaultValue = "") String search, @RequestParam (defaultValue = "") String districtName,
                                          @RequestParam (defaultValue = "") String wardName, @RequestParam (defaultValue = "") String address,
                                          @RequestParam (defaultValue = "") Double rating,Pageable pageable){
+        if (pageable == null || pageable.isUnpaged()) {
+            pageable = PageRequest.of(0, 100);
+        }
         Page<PlaceDTO> placeDTOS = iPlaceService.findAllByCategoryAndSearch(category, search, districtName, wardName, address, rating, pageable);
         if(placeDTOS.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

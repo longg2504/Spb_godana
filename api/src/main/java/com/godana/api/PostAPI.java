@@ -13,6 +13,7 @@ import com.godana.utils.AppUtils;
 import com.godana.utils.ValidateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,9 @@ public class PostAPI {
 
     @GetMapping
     public ResponseEntity<?> findAllPost(@RequestParam (defaultValue = "") Category category, Pageable pageable){
+        if (pageable == null || pageable.isUnpaged()) {
+            pageable = PageRequest.of(0, 100);
+        }
         Page<PostDTO> postDTOS = iPostService.findAllByCategory(category, pageable);
         if(postDTOS.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
