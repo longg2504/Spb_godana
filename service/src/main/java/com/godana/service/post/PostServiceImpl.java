@@ -111,6 +111,11 @@ public class PostServiceImpl implements IPostService{
     }
 
     @Override
+    public Optional<PostDTO> findAllByPostId(Long postId) {
+        return postRepository.findAllByPostId(postId);
+    }
+
+    @Override
     public List<Post> findAllByUserIdAndDeleted(Long userId, boolean deleted) {
         return postRepository.findAllByUserIdAndDeleted(userId, false, Sort.by(Sort.Direction.DESC, "createdAt"));
     }

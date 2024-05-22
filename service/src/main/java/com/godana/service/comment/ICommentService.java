@@ -12,7 +12,7 @@ public interface ICommentService extends IGeneralService<Comment, Long> {
 
     List<Comment> findAllByPost(Post post);
 
-
+    List<Comment> findAllByCommentParent(Comment commentParent);
     List<ReplyResDTO> findAllByCommentParentId(Long commentParentId);
     CommenCreResDTO createComment(CommentCreReqDTO commentCreReqDTO);
 

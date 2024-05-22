@@ -80,4 +80,21 @@ public class CommentAPI {
         return new ResponseEntity<>(commentResDTO, HttpStatus.OK);
     }
 
+    @PostMapping("/deleted/{commentId}")
+    public ResponseEntity<?> deletedComment(@PathVariable("commentId") String commentIdStr){
+        if(!validateUtils.isNumberValid(commentIdStr)){
+            throw new DataInputException("ID Comment không đúng định dạng");
+        }
+        Long commentId = Long.parseLong(commentIdStr);
+
+        Optional<Comment> commentOptional = iCommentService.findById(commentId);
+        if(!commentOptional.isPresent()){
+            throw new DataInputException("Comment này không tồn tại");
+        }
+        Comment comment = commentOptional.get();
+        iCommentService.delete(comment);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

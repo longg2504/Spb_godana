@@ -31,15 +31,37 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             ") " +
             "FROM Post as p " +
             "LEFT JOIN Like as l " +
-            "ON l.post.id = p.id " +
+            "ON l.post.id = p.id AND l.deleted = false " +
             "LEFT JOIN Comment as c " +
-            "ON c.post.id = p.id " +
+            "ON c.post.id = p.id AND c.deleted = false " +
             "WHERE (:category IS NULL OR p.category = :category) " +
             "AND p.deleted = false " +
             "GROUP BY p.id, p.postTitle, p.content, p.category, p.user, p.createdAt " +
             "ORDER BY p.createdAt DESC "
     )
     Page<PostDTO> findAllByCategory(@Param("category") Category category, Pageable pageable);
+
+    @Query("SELECT NEW com.godana.domain.dto.post.PostDTO (" +
+            "p.id," +
+            "p.postTitle, " +
+            "p.content," +
+            "p.category," +
+            "p.user, " +
+            "CASE WHEN COUNT(DISTINCT l.id) is NULL THEN 0 ELSE COUNT(DISTINCT l.id) END, " +
+            "CASE WHEN COUNT(DISTINCT c.id) is NULL THEN 0 ELSE COUNT(DISTINCT c.id) END, " +
+            "p.createdAt " +
+            ") " +
+            "FROM Post as p " +
+            "LEFT JOIN Like as l " +
+            "ON l.post.id = p.id AND l.deleted = false " +
+            "LEFT JOIN Comment as c " +
+            "ON c.post.id = p.id AND c.deleted = false " +
+            "WHERE c.post.id = :postId " +
+            "AND p.deleted = false " +
+            "GROUP BY p.id, p.postTitle, p.content, p.category, p.user, p.createdAt " +
+            "ORDER BY p.createdAt DESC "
+    )
+    Optional<PostDTO> findAllByPostId(@Param("postId") Long postId);
 
     List<Post> findAllByUserIdAndDeleted(Long userId, boolean deleted, Sort sort);
 

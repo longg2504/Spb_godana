@@ -1,8 +1,10 @@
 package com.godana.api;
 
 import com.godana.domain.dto.post.*;
+import com.godana.domain.dto.postAvatar.PostAvatarResDTO;
 import com.godana.domain.entity.Category;
 import com.godana.domain.entity.Post;
+import com.godana.domain.entity.PostAvatar;
 import com.godana.domain.entity.User;
 import com.godana.exception.DataInputException;
 import com.godana.service.post.IPostService;
@@ -48,12 +50,20 @@ public class PostAPI {
         }
         Long postId = Long.parseLong(postIdStr);
 
+        Optional<PostDTO> postDTOOptional = iPostService.findAllByPostId(postId);
+        if(!postDTOOptional.isPresent()){
+            throw new DataInputException("Bài Post này không có xin vui lòng xem lại");
+        }
+
         Optional<Post> postOptional = iPostService.findById(postId);
+
+        Post post = postOptional.get();
         if(!postOptional.isPresent()){
             throw new DataInputException("Bài Post này không có xin vui lòng xem lại");
         }
-        Post post = postOptional.get();
-        PostDTO postDTO = post.toPostDTO(post.getLikes().size(), post.getComments().size(), post.getCreatedAt());
+        List<PostAvatar> postAvatars = post.getPostImages();
+        PostDTO postDTO = postDTOOptional.get();
+        postDTO.setPostAvatar(toAvatarDTOList(postAvatars));
         return new ResponseEntity<>(postDTO, HttpStatus.OK);
     }
 
@@ -112,5 +122,15 @@ public class PostAPI {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
+    public List<PostAvatarResDTO> toAvatarDTOList(List<PostAvatar> postAvatars){
+        List<PostAvatarResDTO> dtoList = new ArrayList<>();
+        for (PostAvatar postAvatar : postAvatars) {
+            dtoList.add(postAvatar.toAvatarResDTO());
+        }
+        return dtoList;
+    }
+
 
 }

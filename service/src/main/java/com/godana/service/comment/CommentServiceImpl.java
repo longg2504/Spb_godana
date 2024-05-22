@@ -44,7 +44,18 @@ public class CommentServiceImpl implements ICommentService{
 
     @Override
     public void delete(Comment comment) {
-        commentRepository.delete(comment);
+        if(comment.getCommentParent() == null){
+            List<Comment> commentList = commentRepository.findAllByCommentParent(comment);
+            if(!commentList.isEmpty()){
+                for(Comment item : commentList){
+                    item.setDeleted(true);
+                    commentRepository.save(item);
+                }
+            }
+        }
+        comment.setDeleted(true);
+        commentRepository.save(comment);
+
     }
 
     @Override
@@ -61,6 +72,12 @@ public class CommentServiceImpl implements ICommentService{
     public List<Comment> findAllByPost(Post post) {
         return commentRepository.findAllByPost(post);
     }
+
+    @Override
+    public List<Comment> findAllByCommentParent(Comment commentParent) {
+        return commentRepository.findAllByCommentParent(commentParent);
+    }
+
 
     @Override
     public List<ReplyResDTO> findAllByCommentParentId(Long commentParentId) {

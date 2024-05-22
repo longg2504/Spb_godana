@@ -48,5 +48,4 @@ public class UserReqUpDTO implements Validator {
 
         }
     }
-    }
-
+}

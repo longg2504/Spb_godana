@@ -25,7 +25,8 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             "WHERE c1.post.id = :postId " +
             "AND c1.commentParent.id IS NULL " +
             "AND c1.deleted = false " +
-            "GROUP BY c1.id "
+            "GROUP BY c1.id " +
+            "ORDER BY c1.createdAt DESC "
     )
     List<CommentResDTO> findAllByPostId(Long postId);
 
@@ -38,12 +39,16 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             ") " +
             "FROM Comment as c1 " +
             "LEFT JOIN Comment as c2 " +
-            "ON c1.id = c2.commentParent.id " +
+            "ON c1.id = c2.commentParent.id AND c2.deleted = false " +
             "WHERE c1.commentParent.id = :commentParentId " +
             "AND c1.deleted = false " +
-            "GROUP BY c1.id "
+            "GROUP BY c1.id " +
+            "ORDER BY c1.createdAt DESC "
     )
     List<ReplyResDTO> findAllByCommentParentId(Long commentParentId);
 
     List<Comment> findAllByPost(Post post);
+
+    List<Comment> findAllByCommentParent(Comment commentParent);
+
 }
