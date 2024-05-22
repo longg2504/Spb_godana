@@ -56,7 +56,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "ON l.post.id = p.id AND l.deleted = false " +
             "LEFT JOIN Comment as c " +
             "ON c.post.id = p.id AND c.deleted = false " +
-            "WHERE c.post.id = :postId " +
+            "WHERE p.id = :postId " +
             "AND p.deleted = false " +
             "GROUP BY p.id, p.postTitle, p.content, p.category, p.user, p.createdAt " +
             "ORDER BY p.createdAt DESC "
