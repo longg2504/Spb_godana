@@ -3,6 +3,7 @@ package com.godana.api;
 import com.godana.domain.dto.user.UserLoginReqDTO;
 import com.godana.domain.dto.user.AdminRegisterReqDTO;
 import com.godana.domain.dto.user.UserRegisterReqDTO;
+import com.godana.domain.dto.user.UserReqUpDTO;
 import com.godana.domain.entity.JwtResponse;
 import com.godana.domain.entity.Role;
 import com.godana.domain.entity.User;
@@ -75,6 +76,7 @@ public class AuthAPI {
 
     @PostMapping("/registerUser")
     public ResponseEntity<?> registerUser(@Valid @ModelAttribute UserRegisterReqDTO userDTO, BindingResult bindingResult) {
+        new UserRegisterReqDTO().validate(userDTO, bindingResult);
         if (bindingResult.hasFieldErrors()) {
             return appUtils.mapErrorToResponse(bindingResult);
         }
@@ -100,6 +102,7 @@ public class AuthAPI {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody UserLoginReqDTO userLoginReqDTO, BindingResult bindingResult) {
+        new UserLoginReqDTO().validate(userLoginReqDTO, bindingResult);
         if (bindingResult.hasFieldErrors()) {
             return appUtils.mapErrorToResponse(bindingResult);
         }

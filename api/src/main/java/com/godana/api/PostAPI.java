@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -93,13 +94,22 @@ public class PostAPI {
 
 
     @PostMapping
-    public ResponseEntity<?> createPost(@ModelAttribute PostCreReqDTO postCreReqDTO){
+    public ResponseEntity<?> createPost(@ModelAttribute PostCreReqDTO postCreReqDTO, BindingResult bindingResult){
+        new PostCreReqDTO().validate(postCreReqDTO, bindingResult);
+        if (bindingResult.hasFieldErrors()) {
+            return appUtils.mapErrorToResponse(bindingResult);
+        }
         PostCreResDTO postCreResDTO = iPostService.createPost(postCreReqDTO);
         return new ResponseEntity<>(postCreResDTO, HttpStatus.OK);
     }
 
     @PostMapping("/{postId}")
-    public ResponseEntity<?> updatePost(@PathVariable("postId") String postIdStr, @ModelAttribute PostUpReqDTO postUpReqDTO) {
+    public ResponseEntity<?> updatePost(@PathVariable("postId") String postIdStr, @ModelAttribute PostUpReqDTO postUpReqDTO, BindingResult bindingResult) {
+        new PostUpReqDTO().validate(postUpReqDTO, bindingResult);
+        if (bindingResult.hasFieldErrors()) {
+            return appUtils.mapErrorToResponse(bindingResult);
+        }
+
         if(!validateUtils.isNumberValid(postIdStr)) {
             throw new DataInputException("Mã bài viết không hợp lệ vui lòng xem lại !!!");
         }

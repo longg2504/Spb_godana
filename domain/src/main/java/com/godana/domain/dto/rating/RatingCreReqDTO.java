@@ -1,5 +1,6 @@
 package com.godana.domain.dto.rating;
 
+import com.godana.domain.dto.post.PostCreReqDTO;
 import com.godana.domain.entity.Place;
 import com.godana.domain.entity.Rating;
 import com.godana.domain.entity.User;
@@ -8,13 +9,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
+
+import javax.validation.constraints.NotBlank;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Accessors(chain = true)
-public class RatingCreReqDTO {
+public class RatingCreReqDTO implements Validator {
+    @NotBlank(message = "nội dung đánh giá không được trồng")
     private String content;
     private Double rating;
     private Long placeId;
@@ -29,4 +35,20 @@ public class RatingCreReqDTO {
                 .setPlace(place)
                 ;
     }
+
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return RatingCreReqDTO.class.isAssignableFrom(clazz);
+    }
+
+    @Override
+    public void validate(Object target, Errors errors) {
+        RatingCreReqDTO ratingCreReqDTO = (RatingCreReqDTO) target;
+        String content = ratingCreReqDTO.content;
+        if (content.isEmpty()) {
+            errors.rejectValue("content", "content.null", "nội dung đánh giá không được phép rỗng");
+        }
+
+    }
+
 }

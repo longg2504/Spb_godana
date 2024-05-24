@@ -1,13 +1,16 @@
 package com.godana.api;
 
 import com.godana.domain.dto.comment.*;
+import com.godana.domain.dto.place.PlaceCreReqDTO;
 import com.godana.domain.entity.Comment;
 import com.godana.exception.DataInputException;
 import com.godana.service.comment.ICommentService;
+import com.godana.utils.AppUtils;
 import com.godana.utils.ValidateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +23,8 @@ public class CommentAPI {
     private ValidateUtils validateUtils;
     @Autowired
     private ICommentService iCommentService;
+    @Autowired
+    private AppUtils appUtils;
 
     @GetMapping("/{postId}")
     public ResponseEntity<?> getAllCommentParentByPost(@PathVariable("postId") String postIdStr){
@@ -54,13 +59,22 @@ public class CommentAPI {
     }
 
     @PostMapping
-    public ResponseEntity<?> createComment(@RequestBody CommentCreReqDTO commentCreReqDTO){
+    public ResponseEntity<?> createComment(@RequestBody CommentCreReqDTO commentCreReqDTO, BindingResult bindingResult){
+        new CommentCreReqDTO().validate(commentCreReqDTO, bindingResult);
+        if (bindingResult.hasFieldErrors()) {
+            return appUtils.mapErrorToResponse(bindingResult);
+        }
         CommenCreResDTO commentResDTO = iCommentService.createComment(commentCreReqDTO);
         return new ResponseEntity<>(commentResDTO, HttpStatus.OK);
     }
 
     @PostMapping("/{commentId}")
-    public ResponseEntity<?> replyComment(@PathVariable("commentId") String commentIdStr , @RequestBody ReplyCreReqDTO replyCreReqDTO){
+    public ResponseEntity<?> replyComment(@PathVariable("commentId") String commentIdStr , @RequestBody ReplyCreReqDTO replyCreReqDTO, BindingResult bindingResult){
+        new ReplyCreReqDTO().validate(replyCreReqDTO, bindingResult);
+        if (bindingResult.hasFieldErrors()) {
+            return appUtils.mapErrorToResponse(bindingResult);
+        }
+
         if(!validateUtils.isNumberValid(commentIdStr)){
             throw new DataInputException("ID Comment không đúng định dạng");
         }
@@ -70,7 +84,11 @@ public class CommentAPI {
     }
 
     @PostMapping("/update/{commentId}")
-    public ResponseEntity<?> updateComment(@PathVariable("commentId") String commentIdStr, @RequestBody CommentUpReqDTO commentUpReqDTO) {
+    public ResponseEntity<?> updateComment(@PathVariable("commentId") String commentIdStr, @RequestBody CommentUpReqDTO commentUpReqDTO, BindingResult bindingResult) {
+        new CommentUpReqDTO().validate(commentUpReqDTO, bindingResult);
+        if (bindingResult.hasFieldErrors()) {
+            return appUtils.mapErrorToResponse(bindingResult);
+        }
         if(!validateUtils.isNumberValid(commentIdStr)){
             throw new DataInputException("ID Comment không đúng định dạng");
         }

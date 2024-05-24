@@ -6,8 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -16,10 +19,13 @@ import java.util.List;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class PlaceUpReqDTO {
+public class PlaceUpReqDTO implements Validator {
+    @NotBlank(message = "Vui lòng nhập tên địa điểm")
     private String placeTitle;
     private String content;
+    @NotBlank(message = "Vui lòng nhập kinh độ")
     private String longitude;
+    @NotBlank(message = "Vui lòng nhập Vĩ độ")
     private String latitude;
     private List<MultipartFile> placeAvatar;
     private Long categoryId;
@@ -70,5 +76,32 @@ public class PlaceUpReqDTO {
                 .setLocationRegion(locationRegion)
                 .setUser(user)
                 .setContact(contact);
+    }
+
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return PlaceUpReqDTO.class.isAssignableFrom(clazz);
+    }
+
+    @Override
+    public void validate(Object target, Errors errors) {
+        PlaceUpReqDTO placeUpReqDTO = (PlaceUpReqDTO) target;
+        String placeTitle = placeUpReqDTO.placeTitle;
+        String longitude = placeUpReqDTO.longitude;
+        String latitude = placeUpReqDTO.latitude;
+        if (placeTitle.isEmpty()) {
+            errors.rejectValue("placeTitle", "placeTitle.null", "Tên địa điểm không được phép rỗng");
+            return;
+        }
+
+
+        if (longitude.isEmpty()) {
+            errors.rejectValue("longitude", "longitude.null", "Kinh độ không được phép rỗng");
+
+        }
+        if (latitude.isEmpty()) {
+            errors.rejectValue("latitude", "latitude.null", "Vĩ độ không được phép rỗng");
+
+        }
     }
 }

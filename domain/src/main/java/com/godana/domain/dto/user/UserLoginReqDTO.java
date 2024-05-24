@@ -22,10 +22,8 @@ public class UserLoginReqDTO implements Validator {
 
 
     @NotBlank(message = "Vui lòng nhập tài khoản!")
-    @Size(min = 8, max = 35, message = "Độ dài email nằm trong khoảng 8-35 ký tự!")
     private String username;
 
-    @Size(min = 3, max = 50, message = "Độ dài mật khẩu nằm trong khoảng 3-50 ký tự!")
     @NotBlank(message = "Vui lòng nhập mật khẩu!")
     private String password;
 

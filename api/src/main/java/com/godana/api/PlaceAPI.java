@@ -1,6 +1,7 @@
 package com.godana.api;
 
 import com.godana.domain.dto.place.*;
+import com.godana.domain.dto.post.PostCreReqDTO;
 import com.godana.domain.dto.rating.RatingStats;
 import com.godana.domain.entity.Category;
 import com.godana.domain.entity.Place;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -85,13 +87,21 @@ public class PlaceAPI {
     }
 
     @PostMapping
-    public ResponseEntity<?> createPlace(@ModelAttribute PlaceCreReqDTO placeCreReqDTO){
+    public ResponseEntity<?> createPlace(@ModelAttribute PlaceCreReqDTO placeCreReqDTO , BindingResult bindingResult){
+        new PlaceCreReqDTO().validate(placeCreReqDTO, bindingResult);
+        if (bindingResult.hasFieldErrors()) {
+            return appUtils.mapErrorToResponse(bindingResult);
+        }
         PlaceCreResDTO placeCreResDTO = iPlaceService.create(placeCreReqDTO);
         return new ResponseEntity<>(placeCreResDTO, HttpStatus.OK);
     }
 
     @PostMapping("/{placeId}")
-    public ResponseEntity<?> updatePlace(@PathVariable("placeId") String placeIdStr, PlaceUpReqDTO placeUpReqDTO){
+    public ResponseEntity<?> updatePlace(@PathVariable("placeId") String placeIdStr, PlaceUpReqDTO placeUpReqDTO , BindingResult bindingResult){
+        new PlaceUpReqDTO().validate(placeUpReqDTO, bindingResult);
+        if (bindingResult.hasFieldErrors()) {
+            return appUtils.mapErrorToResponse(bindingResult);
+        }
         PlaceUpResDTO placeUpResDTO = iPlaceService.update(placeIdStr,placeUpReqDTO);
         return new ResponseEntity<>(placeUpResDTO, HttpStatus.OK);
     }

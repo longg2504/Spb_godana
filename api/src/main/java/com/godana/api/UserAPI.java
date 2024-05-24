@@ -1,5 +1,6 @@
 package com.godana.api;
 
+import com.godana.domain.dto.category.CategoryCreReqDTO;
 import com.godana.domain.dto.user.ChangePasswordReqDTO;
 import com.godana.domain.dto.user.UserReqUpDTO;
 import com.godana.domain.dto.user.UserResDTO;
@@ -121,6 +122,7 @@ public class UserAPI {
 
     @PostMapping("/update-user/{userId}")
     public ResponseEntity<?> updateUser(@Valid @PathVariable("userId") String userIdStr,@ModelAttribute UserReqUpDTO userReqUpDTO, BindingResult bindingResult){
+        new UserReqUpDTO().validate(userReqUpDTO, bindingResult);
         if (bindingResult.hasFieldErrors()) {
             return appUtils.mapErrorToResponse(bindingResult);
         }

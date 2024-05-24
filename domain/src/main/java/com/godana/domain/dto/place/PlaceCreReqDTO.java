@@ -1,5 +1,6 @@
 package com.godana.domain.dto.place;
 
+import com.godana.domain.dto.user.UserReqUpDTO;
 import com.godana.domain.entity.Contact;
 import com.godana.domain.entity.LocationRegion;
 import com.godana.domain.entity.Place;
@@ -10,8 +11,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.cglib.core.Local;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -20,10 +24,13 @@ import java.util.List;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class PlaceCreReqDTO {
+public class PlaceCreReqDTO implements Validator {
+    @NotBlank(message = "Vui lòng nhập tên địa điểm")
     private String placeTitle;
     private String content;
+    @NotBlank(message = "Vui lòng nhập kinh độ")
     private String longitude;
+    @NotBlank(message = "Vui lòng nhập Vĩ độ")
     private String latitude;
     private List<MultipartFile> placeAvatar;
     private Long categoryId;
@@ -61,5 +68,32 @@ public class PlaceCreReqDTO {
                 .setCloseTime(LocalTime.parse(closeTime))
                 ;
 
+    }
+
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return PlaceCreReqDTO.class.isAssignableFrom(clazz);
+    }
+
+    @Override
+    public void validate(Object target, Errors errors) {
+        PlaceCreReqDTO placeCreReqDTO = (PlaceCreReqDTO) target;
+        String placeTitle = placeCreReqDTO.placeTitle;
+        String longitude = placeCreReqDTO.longitude;
+        String latitude = placeCreReqDTO.latitude;
+        if (placeTitle.isEmpty()) {
+            errors.rejectValue("placeTitle", "placeTitle.null", "Tên địa điểm không được phép rỗng");
+            return;
+        }
+
+
+        if (longitude.isEmpty()) {
+            errors.rejectValue("longitude", "longitude.null", "Kinh độ không được phép rỗng");
+
+        }
+        if (latitude.isEmpty()) {
+            errors.rejectValue("latitude", "latitude.null", "Vĩ độ không được phép rỗng");
+
+        }
     }
 }

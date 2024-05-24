@@ -20,7 +20,6 @@ public class UserReqUpDTO implements Validator {
 
     @NotBlank(message = "Vui lòng nhập Họ tên!")
     public String fullname;
-
     @Pattern(regexp = "^[\\w]+@([\\w-]+\\.)+[\\w-]{2,6}$", message = "Email không hợp lệ!")
     @NotBlank(message = "Vui lòng nhập email!")
     public String email;

@@ -1,5 +1,6 @@
 package com.godana.api;
 
+import com.godana.domain.dto.post.PostCreReqDTO;
 import com.godana.domain.dto.rating.RatingCreReqDTO;
 import com.godana.domain.dto.rating.RatingCreResDTO;
 import com.godana.domain.dto.rating.RatingDTO;
@@ -9,10 +10,12 @@ import com.godana.exception.DataInputException;
 import com.godana.service.place.IPlaceService;
 import com.godana.service.rating.IRatingService;
 import com.godana.service.user.IUserService;
+import com.godana.utils.AppUtils;
 import com.godana.utils.ValidateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +32,8 @@ public class RatingAPI {
     private IUserService iUserService;
     @Autowired
     private ValidateUtils validateUtils;
+    @Autowired
+    private AppUtils appUtils;
 
 
     @GetMapping("/{placeId}")
@@ -48,7 +53,11 @@ public class RatingAPI {
 
 
     @PostMapping
-    public ResponseEntity<?> createRating(@RequestBody RatingCreReqDTO ratingCreReqDTO){
+    public ResponseEntity<?> createRating(@RequestBody RatingCreReqDTO ratingCreReqDTO, BindingResult bindingResult){
+        new RatingCreReqDTO().validate(ratingCreReqDTO, bindingResult);
+        if (bindingResult.hasFieldErrors()) {
+            return appUtils.mapErrorToResponse(bindingResult);
+        }
         Double point = ratingCreReqDTO.getRating();
         if(1.0 <= point || point >= 5.0) {
             RatingCreResDTO ratingCreResDTO = iRatingService.create(ratingCreReqDTO);
