@@ -2,6 +2,7 @@ package com.godana.repository.favourite;
 
 import com.godana.domain.dto.favourite.FavouriteDTO;
 import com.godana.domain.entity.Favourite;
+import com.godana.domain.entity.Place;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,5 +18,7 @@ public interface FavouriteRepository extends JpaRepository<Favourite, Long> {
     List<Favourite> findAllByUserIdAndDeletedFalse(Long userId);
 
     Optional<Favourite> findByUserIdAndPlaceId(Long userId, Long placeId);
+
+    List<Favourite> findAllByPlace(Place place);
 
 }

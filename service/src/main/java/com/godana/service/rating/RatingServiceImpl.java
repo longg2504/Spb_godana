@@ -61,6 +61,11 @@ public class RatingServiceImpl implements IRatingService{
     }
 
     @Override
+    public List<Rating> findAllByPlace(Place place) {
+        return ratingRepository.findAllByPlace(place);
+    }
+
+    @Override
     public RatingCreResDTO create(RatingCreReqDTO ratingCreReqDTO) {
         Optional<Place> placeOptional = iPlaceService.findById(ratingCreReqDTO.getPlaceId());
         if(!placeOptional.isPresent()){

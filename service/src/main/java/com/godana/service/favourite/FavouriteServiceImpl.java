@@ -53,6 +53,11 @@ public class FavouriteServiceImpl implements IFavouriteService{
     }
 
     @Override
+    public List<Favourite> findAllByPlace(Place place) {
+        return favouriteRepository.findAllByPlace(place);
+    }
+
+    @Override
     public Favourite create(User user, Place place) {
         Favourite favourite = new Favourite();
         favourite.setId(null);

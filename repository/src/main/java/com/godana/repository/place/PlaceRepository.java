@@ -38,13 +38,13 @@ public interface PlaceRepository extends JpaRepository<Place,Long> {
             "FROM Place AS p " +
             "LEFT JOIN Rating AS r " +
             "ON r.place.id = p.id " +
-            "WHERE (:category IS NULL OR p.category = :category) " +
+            "WHERE p.deleted = false " +
+            "AND (:category IS NULL OR p.category = :category) " +
             "AND p.title LIKE %:search% " +
             "AND p.locationRegion.districtName LIKE %:districtName% " +
             "AND p.locationRegion.wardName LIKE %:wardName% " +
             "AND p.locationRegion.address LIKE %:address% " +
             "AND :rating IS NULL OR r.rating = :rating " +
-            "AND p.deleted = false " +
             "GROUP BY p.id "
     )
     Page<PlaceDTO> findAllByCategoryAndSearch(@Param("category") Category category, @Param("search") String search, @Param("districtName") String districtName, @Param("wardName") String wardName, @Param("address") String address, @Param("rating") Double rating , Pageable pageable);
@@ -56,7 +56,7 @@ public interface PlaceRepository extends JpaRepository<Place,Long> {
             "FROM places as p " +
             "LEFT JOIN ratings as r " +
             "ON r.place_id = p.id " +
-            "WHERE ST_Distance_Sphere(ST_PointFromText(CONCAT('POINT(', p.longitude, ' ', p.latitude, ')')),ST_PointFromText(CONCAT('POINT(', :longitude, ' ', :latitude, ')')), 4326) <= 1 AND p.id <> :id " +
+            "WHERE ST_Distance_Sphere(ST_PointFromText(CONCAT('POINT(', p.longitude, ' ', p.latitude, ')')),ST_PointFromText(CONCAT('POINT(', :longitude, ' ', :latitude, ')')), 4326) <= 1 AND p.id <> :id AND p.deleted = false " +
             "GROUP BY p.id ")
     List<Place> findNearPlace(float longitude, float latitude, Long id);
 

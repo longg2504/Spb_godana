@@ -3,6 +3,7 @@ package com.godana.repository.rating;
 import com.godana.domain.dto.place.PlaceCountDTO;
 import com.godana.domain.dto.rating.RatingCountDTO;
 import com.godana.domain.dto.rating.RatingDTO;
+import com.godana.domain.entity.Place;
 import com.godana.domain.entity.Rating;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,5 +37,7 @@ public interface RatingRepository extends JpaRepository<Rating, Long> {
             "WHERE r.deleted = false "
     )
     RatingCountDTO countRating();
+
+    List<Rating> findAllByPlace(Place place);
 
 }

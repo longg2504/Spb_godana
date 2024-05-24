@@ -10,9 +10,11 @@ import com.godana.domain.enums.EPlaceStatus;
 import com.godana.exception.DataInputException;
 import com.godana.repository.category.CategoryRepository;
 import com.godana.repository.contact.ContactRepository;
+import com.godana.repository.favourite.FavouriteRepository;
 import com.godana.repository.locationRegion.LocationRegionRepository;
 import com.godana.repository.place.PlaceRepository;
 import com.godana.repository.placeAvatar.PlaceAvatarRepository;
+import com.godana.repository.rating.RatingRepository;
 import com.godana.repository.user.UserRepository;
 import com.godana.service.category.ICategoryService;
 import com.godana.service.placeAvatar.IPlaceAvatarService;
@@ -49,6 +51,10 @@ public class PlaceServiceImpl implements IPlaceService {
     private UserRepository userRepository;
     @Autowired
     private PlaceAvatarRepository placeAvatarRepository;
+    @Autowired
+    private FavouriteRepository favouriteRepository;
+    @Autowired
+    private RatingRepository ratingRepository;
     @Autowired
     private UploadUtils uploadUtils;
     @Autowired
@@ -135,7 +141,27 @@ public class PlaceServiceImpl implements IPlaceService {
 
     @Override
     public void delete(Place place) {
-        placeRepository.delete(place);
+        Long contactId = place.getContact().getId();
+        Optional<Contact> contactOptional = contactRepository.findById(contactId);
+        Contact contact = contactOptional.get();
+        contact.setDeleted(true);
+        contactRepository.save(contact);
+        List<Rating> ratingList = ratingRepository.findAllByPlace(place);
+        if(!ratingList.isEmpty()){
+            for(Rating item : ratingList){
+                item.setDeleted(true);
+                ratingRepository.save(item);
+            }
+        }
+        List<Favourite> favourites = favouriteRepository.findAllByPlace(place);
+        if(!favourites.isEmpty()){
+            for(Favourite item : favourites){
+                item.setDeleted(true);
+                favouriteRepository.save(item);
+            }
+        }
+        place.setDeleted(true);
+        placeRepository.save(place);
     }
 
     @Override

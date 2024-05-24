@@ -15,6 +15,7 @@ public interface IFavouriteService extends IGeneralService<Favourite, Long> {
     List<Favourite> findAllByUserIdAndDeletedFalse(Long userId);
 
     Optional<Favourite> findByUserIdAndPlaceId(Long userId, Long placeId);
+    List<Favourite> findAllByPlace(Place place);
 
     Favourite create(User user, Place place);
 }

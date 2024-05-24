@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,10 +45,8 @@ public class PlaceAPI {
     public ResponseEntity<?> getAllPlace(@RequestParam (defaultValue = "") Category category,
                                          @RequestParam (defaultValue = "") String search, @RequestParam (defaultValue = "") String districtName,
                                          @RequestParam (defaultValue = "") String wardName, @RequestParam (defaultValue = "") String address,
-                                         @RequestParam (defaultValue = "") Double rating,Pageable pageable){
-        if (pageable == null || pageable.isUnpaged()) {
-            pageable = PageRequest.of(0, 100);
-        }
+                                         @RequestParam (defaultValue = "") Double rating,@PageableDefault(size = 100) Pageable pageable){
+
         Page<PlaceDTO> placeDTOS = iPlaceService.findAllByCategoryAndSearch(category, search, districtName, wardName, address, rating, pageable);
         if(placeDTOS.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -95,6 +94,19 @@ public class PlaceAPI {
     public ResponseEntity<?> updatePlace(@PathVariable("placeId") String placeIdStr, PlaceUpReqDTO placeUpReqDTO){
         PlaceUpResDTO placeUpResDTO = iPlaceService.update(placeIdStr,placeUpReqDTO);
         return new ResponseEntity<>(placeUpResDTO, HttpStatus.OK);
+    }
+
+    @PostMapping("/deleted/{placeId}")
+    public ResponseEntity<?> deletedPlace(@PathVariable("placeId") String placeIdStr){
+        if(!validateUtils.isNumberValid(placeIdStr)){
+            throw new DataInputException("ID Place không đúng định dạng");
+        }
+        Long placeId = Long.parseLong(placeIdStr);
+        Optional<Place> placeOptional = iPlaceService.findById(placeId);
+        Place place = placeOptional.get();
+        iPlaceService.delete(place);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/nearby_place/{placeId}")
