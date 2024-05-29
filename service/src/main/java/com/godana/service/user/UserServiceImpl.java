@@ -106,11 +106,19 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User update(Long userId, UserReqUpDTO userReqUpDTO) {
         Optional<User> userOptional = iUserService.findById(userId);
+
         if(!userOptional.isPresent()) {
             throw new DataInputException("User này không tồn tại");
         }
 
         User user = userOptional.get();
+
+        Boolean existsByEmail = existsByEmail(userReqUpDTO.getEmail());
+        if(!user.getEmail().equals(userReqUpDTO.getEmail())){
+            if(existsByEmail){
+                throw new DataInputException("Email này đã tồn tại vui lòng xem lại!!!");
+            }
+        }
 
         if(userReqUpDTO.getAvatar() == null){
             user.setEmail(userReqUpDTO.getEmail());

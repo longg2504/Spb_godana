@@ -94,7 +94,11 @@ public class UserAPI {
     }
 
     @PostMapping("/change-password/{userId}")
-    public ResponseEntity<?> changePassword (@PathVariable("userId") String userIdStr, @ModelAttribute ChangePasswordReqDTO changePasswordReqDTO){
+    public ResponseEntity<?> changePassword (@PathVariable("userId") String userIdStr, @ModelAttribute ChangePasswordReqDTO changePasswordReqDTO, BindingResult bindingResult){
+        new ChangePasswordReqDTO().validate(changePasswordReqDTO, bindingResult);
+        if (bindingResult.hasFieldErrors()) {
+            return appUtils.mapErrorToResponse(bindingResult);
+        }
         if(!validateUtils.isNumberValid(userIdStr)) {
             throw new DataInputException("UserId không hợp lệ");
         }
@@ -105,6 +109,9 @@ public class UserAPI {
         }
         User user = userOptional.get();
         String oldPassword = changePasswordReqDTO.getOldPassword();
+        if(changePasswordReqDTO.getNewPassword().length() < 6){
+            throw new DataInputException("độ dài mật khẩu phải hơn 6 ký tự");
+        }
         if(passwordEncoder.matches(oldPassword, user.getPassword())){
             String newPassword = passwordEncoder.encode(changePasswordReqDTO.getNewPassword());
             user.setPassword(newPassword);

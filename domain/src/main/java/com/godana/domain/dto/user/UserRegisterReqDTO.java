@@ -32,7 +32,7 @@ public class UserRegisterReqDTO implements Validator {
     @NotBlank(message = "Vui lòng nhập email!")
     private String email;
 
-    @Size(min = 3, max = 50, message = "Độ dài mật khẩu nằm trong khoảng 3-50 ký tự!")
+    @Size(min = 6, max = 50, message = "Độ dài mật khẩu nằm trong khoảng 3-50 ký tự!")
     @NotBlank(message = "Vui lòng nhập mật khẩu!")
     private String password;
 

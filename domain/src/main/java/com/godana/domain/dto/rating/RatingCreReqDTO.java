@@ -22,6 +22,7 @@ import javax.validation.constraints.NotBlank;
 public class RatingCreReqDTO implements Validator {
     @NotBlank(message = "nội dung đánh giá không được trồng")
     private String content;
+    @NotBlank(message = "điểm đánh giá không được trống")
     private Double rating;
     private Long placeId;
     private Long userId;
@@ -45,10 +46,10 @@ public class RatingCreReqDTO implements Validator {
     public void validate(Object target, Errors errors) {
         RatingCreReqDTO ratingCreReqDTO = (RatingCreReqDTO) target;
         String content = ratingCreReqDTO.content;
+        Double rating = ratingCreReqDTO.rating;
         if (content.isEmpty()) {
             errors.rejectValue("content", "content.null", "nội dung đánh giá không được phép rỗng");
         }
-
     }
 
 }
